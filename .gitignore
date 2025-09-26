@@ -1,0 +1,19 @@
+﻿# build artefacts
+dist/
+win-unpacked/
+release/
+out/
+
+# dependencies
+node_modules/
+
+# binaries
+*.exe
+*.dll
+*.pak
+*.dat
+*.bin
+
+# OS/IDE
+.DS_Store
+Thumbs.db
