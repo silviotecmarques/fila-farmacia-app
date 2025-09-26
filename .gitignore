@@ -1,19 +1,19 @@
-﻿# build artefacts
+# Builds / artefatos
 dist/
 win-unpacked/
-release/
 out/
+release/
 
-# dependencies
+# Dependências
 node_modules/
 
-# binaries
+# Binários grandes (nunca versionar)
 *.exe
 *.dll
 *.pak
 *.dat
 *.bin
 
-# OS/IDE
+# SO / IDE
 .DS_Store
 Thumbs.db

@@ -1,0 +1,36 @@
+{
+  "name": "sistema-de-fila",
+  "version": "1.0.7",
+  "private": true,
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "dist": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^29.4.6",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.silvio.fila",
+    "productName": "Sistema de Fila",
+    "files": [
+      "index.html",
+      "main.js",
+      "preload.js",
+      "renderer/**/*",
+      "style/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "artifactName": "${productName} Setup ${version}.exe"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": true
+    }
+  }
+}

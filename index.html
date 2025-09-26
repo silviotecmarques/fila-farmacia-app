@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistema de Fila - Farmácia</title>
+
+  <link rel="stylesheet" href="style/main.css" />
+  <link rel="stylesheet" href="style/ghibli-theme.css" />
+</head>
+<body>
+  <!-- TELA 1: ATENDIMENTO ATUAL -->
+  <div id="tela-fila">
+    <h1>ATENDIMENTO ATUAL</h1>
+
+    <div id="atual-layout">
+      <div id="atual-container">
+        <div id="nome-atual">SEM ATENDIMENTOS NO MOMENTO</div>
+        <img id="foto-atual" src="assets/icons/sem-atendimento.svg" alt="Sem atendimento">
+      </div>
+
+      <div id="botoes-container">
+        <button id="btn-atendi">
+          <img src="assets/icons/atendi.svg" class="icon-btn" alt="" /> ATENDI
+        </button>
+        <button id="btn-gestao">
+          <img src="assets/icons/config.svg" class="icon-btn" alt="" /> FILA
+        </button>
+      </div>
+    </div>
+
+    <div id="cards-fila" class="cards-container"></div>
+
+    <table id="tabela-fila">
+      <thead>
+        <tr>
+          <th>Ordem</th>
+          <th>Balconista</th>
+          <th>Atendimento</th>
+          <th>Hora</th>
+          <th>Média de Espera</th>
+          <th>Tempo na Fila</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- TELA 2: GESTÃO DA FILA -->
+  <section id="tela-gestao" style="display:none;">
+    <h1>Gestão da Fila</h1>
+    <div id="balconistas-container"></div>
+    <button id="btn-ok">
+      <img src="assets/icons/ok.svg" class="icon-btn" alt="" /> VOLTAR
+    </button>
+  </section>
+
+  <script src="renderer/app.js"></script>
+</body>
+</html>

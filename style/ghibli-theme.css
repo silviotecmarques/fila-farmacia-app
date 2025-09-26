@@ -1,0 +1,8 @@
+:root{
+  --gh-bg:#f6f1e7;--gh-ink:#2a2a2a;--gh-leaf:#86a874;--gh-sky:#a9cde2;--gh-sun:#e7c36a;
+}
+body{background:var(--gh-bg)!important;color:var(--gh-ink)!important;}
+h1{color:var(--gh-leaf)!important;text-transform:none!important;font-weight:600;}
+#tabela-fila{background:#fff!important;color:var(--gh-ink)!important;}
+#botoes-container button,#btn-ok{box-shadow:0 6px 16px rgba(0,0,0,.08);}
+#nome-atual{color:var(--gh-leaf)!important;}
