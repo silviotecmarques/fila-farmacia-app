@@ -3,6 +3,11 @@
   "version": "1.0.7",
   "private": true,
   "main": "main.js",
+  "author": {
+    "name": "Silvio Marques",
+    "email": "silviotec.marques@gmail.com"
+  },
+  "license": "Apache-2.0",
   "scripts": {
     "start": "electron .",
     "dev": "electron .",
@@ -22,7 +27,10 @@
       "renderer/**/*",
       "style/**/*",
       "assets/**/*",
-      "package.json"
+      "package.json",
+      "LICENSE",
+      "NOTICE",
+      "LICENSE.txt"
     ],
     "win": {
       "target": "nsis",
@@ -30,7 +38,8 @@
     },
     "nsis": {
       "oneClick": true,
-      "perMachine": true
+      "perMachine": true,
+      "license": "LICENSE.txt"
     }
   }
 }
