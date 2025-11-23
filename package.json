@@ -1,0 +1,40 @@
+{
+  "name": "sistema-de-fila",
+  "version": "1.0.6",
+  "description": "Sistema de fila para farmácia",
+  "main": "main.js",
+  "author": "Silvio",
+  "scripts": {
+    "start": "electron .",
+    "dist": "npm version patch && electron-builder"
+  },
+  "build": {
+    "appId": "com.farmacia.sistemadefila",
+    "productName": "Sistema de Fila",
+    "copyright": "© 2025 Silvio",
+    "files": [
+      "**/*",
+      "assets/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  },
+  "devDependencies": {
+    "electron": "^29.0.0",
+    "electron-builder": "^24.0.0"
+  },
+  "dependencies": {
+    "electron-updater": "^6.6.2"
+  }
+}

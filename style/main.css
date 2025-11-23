@@ -1,0 +1,184 @@
+/* Estilo base da aplicação (neutro e compatível com o tema Ghibli) */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #000;        /* será sobrescrito pelo tema */
+  color: #fff;             /* será sobrescrito pelo tema */
+  text-align: center;
+}
+
+/* Anti-cópia (app) */
+html, body, #tela-fila, #tela-gestao { -webkit-user-select: none; user-select: none; }
+img { -webkit-user-drag: none; user-drag: none; }
+
+/* Títulos */
+h1 { margin-top: 20px; font-size: 28px; letter-spacing: 2px; text-transform: uppercase; }
+
+/* Container com foto e nome */
+#atual-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+#atual-container { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+
+/* Nome do atendente (verde amigável; o tema pode sobrescrever) */
+#nome-atual {
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  color: #86a874; /* folha */
+}
+
+/* Foto principal (moldura tipo papel) */
+#foto-atual {
+  max-height: 60vh;
+  max-width: 320px;
+  width: 100%;
+  object-fit: contain;
+  border-radius: 18px;
+  background: radial-gradient(120% 140% at 50% 0%, #fff 0%, #faf7f1 60%, #f3eee5 100%);
+  border: 2px solid #e9e2d6;
+  box-shadow: 0 10px 24px rgba(0,0,0,.12);
+}
+
+/* Sem atendimento – brilho dourado suave */
+#foto-atual[src*="sem-atendimento.png"] {
+  animation: brilho-dourado 3s ease-in-out infinite;
+  border: 2px dashed #decfa9;
+}
+@keyframes brilho-dourado {
+  0%,100% { filter: drop-shadow(0 0 0 rgba(231,195,106,.0)); }
+  50%     { filter: drop-shadow(0 0 12px rgba(231,195,106,.45)); }
+}
+
+/* Botões em linha */
+#botoes-container {
+  margin: 30px 0;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+#botoes-container button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;   /* centraliza ícone + texto */
+  text-align: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid #4f8d4f;
+  cursor: pointer;
+  transition: transform .15s ease, filter .15s ease, background .2s ease, color .2s ease, border-color .2s ease;
+  min-width: 180px;
+  background: linear-gradient(#8fcf8b, #6aa96a);
+  color: #fff;
+}
+#botoes-container button:hover {
+  background: linear-gradient(#9bdd97, #6aa96a);
+  border-color: #3f7e3f;
+  transform: translateY(-1px);
+}
+#botoes-container button:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 3px 10px rgba(0,0,0,.08);
+}
+#botoes-container button:focus-visible {
+  outline: 3px solid #bfe6bf; outline-offset: 2px;
+}
+.icon-btn { width: 18px; height: 18px; margin-right: 8px; vertical-align: middle; filter: brightness(0) invert(1); }
+
+/* Botão VOLTAR (tela de gestão) */
+#btn-ok {
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  background: linear-gradient(#8fcf8b, #6aa96a);
+  color: #fff;
+  border: 1px solid #4f8d4f;
+  transition: transform .15s ease, background .2s ease, color .2s ease, border-color .2s ease;
+}
+#btn-ok:hover {
+  background: linear-gradient(#9bdd97, #6aa96a);
+  border-color: #3f7e3f;
+  transform: translateY(-1px);
+}
+#btn-ok:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 3px 10px rgba(0,0,0,.08);
+}
+
+/* Grid de cards (3 primeiros da fila) */
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
+  gap: 14px;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto 20px auto;
+}
+.card-fila {
+  border-radius: 12px;
+  padding: 10px;
+  background: #ffffff10; /* leve contraste no tema escuro; o tema claro sobrescreve */
+}
+.card-photo {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.card-title { margin-top: 8px; font-weight: 600; }
+
+/* Responsivo: 2 colunas e 1 coluna em telas menores */
+@media (max-width: 840px) {
+  .cards-container { grid-template-columns: repeat(2, minmax(160px, 1fr)); }
+}
+@media (max-width: 560px) {
+  .cards-container { grid-template-columns: 1fr; }
+}
+
+/* Tabela da fila */
+#tabela-fila {
+  width: 100%;
+  max-width: 800px;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 20px auto;
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 14px;
+  text-align: center;
+  background: #00000080; /* leve fundo no tema escuro; o tema claro sobrescreve */
+}
+#tabela-fila thead th { padding: 10px; }
+#tabela-fila tbody td { padding: 10px; }
+#tabela-fila tbody tr:nth-child(1) td { font-weight: 600; }
+
+/* TELA 2 (Gestão) */
+#tela-gestao h1 { margin-top: 20px; }
+#balconistas-container {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(120px, 1fr));
+  gap: 16px;
+  max-width: 640px;
+  margin: 20px auto;
+}
+.bloco-foto img {
+  width: 100%;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.bloco-foto img:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 10px 24px rgba(0,0,0,.18);
+}

@@ -1,0 +1,167 @@
+/* ========= TEMA STUDIO GHIBLI =========
+   Carregue este CSS depois de main.css e tela-graficos.css
+   Paleta suave | tipografia de livro | sombras leves
+====================================== */
+
+:root {
+  --gh-bg: #f6f1e7;      /* papel creme */
+  --gh-ink: #2a2a2a;     /* tinta grafite */
+  --gh-sky: #a9cde2;     /* azul céu */
+  --gh-leaf: #86a874;    /* verde folha */
+  --gh-sun: #e7c36a;     /* dourado suave */
+  --gh-stone: #8b8680;   /* cinza-pedra quente */
+  --gh-shadow: 0 6px 16px rgba(0,0,0,.08);
+  --gh-shadow-strong: 0 10px 24px rgba(0,0,0,.12);
+  --gh-radius: 14px;
+}
+
+body {
+  background: var(--gh-bg) !important;
+  color: var(--gh-ink) !important;
+  font-family: "M PLUS Rounded 1c", system-ui, -apple-system, Segoe UI, Roboto, sans-serif !important;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, th {
+  font-family: "Shippori Mincho", Georgia, "Times New Roman", serif !important;
+  letter-spacing: .5px;
+}
+
+h1 {
+  color: var(--gh-leaf) !important;
+  text-transform: none !important;
+  font-weight: 600;
+}
+
+/* ===== Foto e nome do atendente ===== */
+#nome-atual {
+  color: var(--gh-leaf);
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+
+#foto-atual {
+  border-radius: 18px !important;
+  background: radial-gradient(120% 140% at 50% 0%, #fff 0%, #faf7f1 60%, #f3eee5 100%);
+  border: 2px solid #e9e2d6;
+  box-shadow: var(--gh-shadow-strong) !important;
+}
+
+/* “Sem atendimento” com brilho dourado suave */
+#foto-atual[src*="sem-atendimento.png"] {
+  animation: brilho-dourado 3s ease-in-out infinite;
+  box-shadow: 0 0 0 transparent !important;
+  border: 2px dashed #decfa9;
+}
+@keyframes brilho-dourado {
+  0%,100% { filter: drop-shadow(0 0 0 rgba(231,195,106,.0)); }
+  50%     { filter: drop-shadow(0 0 12px rgba(231,195,106,.45)); }
+}
+
+/* ===== Botões VERDES com texto centralizado ===== */
+#botoes-container button,
+#btn-ok,
+#btn-voltar-graficos {
+  background: linear-gradient(#8fcf8b, #6aa96a);
+  color: #fff !important;
+  border: 1px solid #4f8d4f !important;
+  border-radius: 999px !important;
+  box-shadow: var(--gh-shadow);
+  justify-content: center;    /* centraliza conteúdo */
+  text-align: center;
+  font-weight: 600;
+  transition: transform .15s ease, filter .15s ease, background .2s ease, color .2s ease, border-color .2s ease;
+  min-width: 180px;           /* tamanho consistente (opcional) */
+  cursor: pointer;
+}
+
+#botoes-container button:hover,
+#btn-ok:hover,
+#btn-voltar-graficos:hover {
+  background: linear-gradient(#9bdd97, #6aa96a);
+  border-color: #3f7e3f !important;
+  transform: translateY(-1px);
+}
+
+#botoes-container button:active,
+#btn-ok:active,
+#btn-voltar-graficos:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 3px 10px rgba(0,0,0,.08);
+}
+
+#botoes-container button:focus-visible,
+#btn-ok:focus-visible,
+#btn-voltar-graficos:focus-visible {
+  outline: 3px solid #bfe6bf;
+  outline-offset: 2px;
+}
+
+/* Ícones dos botões brancos sobre o verde */
+.icon-btn { width: 18px; height: 18px; margin-right: 8px; vertical-align: middle; filter: brightness(0) invert(1); }
+
+/* ===== Cards dos 3 primeiros ===== */
+.cards-container { gap: 16px !important; }
+.card-fila {
+  background: #ffffff !important;
+  border: 1px solid #eadfcd !important;
+  border-radius: var(--gh-radius) !important;
+  box-shadow: var(--gh-shadow) !important;
+}
+.card-photo {
+  border-radius: 10px !important;
+  border: 1px solid #eee5d6;
+}
+.card-title { color: var(--gh-ink) !important; }
+
+/* ===== Tabela ===== */
+#tabela-fila {
+  background: #ffffff !important;
+  color: var(--gh-ink) !important;
+  box-shadow: var(--gh-shadow);
+  border: 1px solid #eadfcd;
+  border-radius: var(--gh-radius);
+}
+#tabela-fila thead {
+  background: linear-gradient(#cfe4ef, #b9d7e8) !important;
+  color: #233444 !important;
+  text-transform: none !important;
+  border-bottom: 1px solid #a3cadf !important;
+}
+#tabela-fila thead th { padding: 12px !important; }
+#tabela-fila tbody tr:nth-child(odd) td { background: #faf7f1; }
+#tabela-fila tbody tr:nth-child(even) td { background: #fff; }
+#tabela-fila tbody tr:nth-child(1) td {
+  background: #edf4ea !important;
+  color: #2d4731 !important;
+  font-weight: 700 !important;
+}
+
+/* ===== Gestão ===== */
+#tela-gestao h1 { color: var(--gh-sky) !important; }
+#balconistas-container .bloco-foto img {
+  border: 1px solid #eadfcd;
+  border-radius: var(--gh-radius);
+  box-shadow: var(--gh-shadow);
+  background: #fff;
+}
+#balconistas-container .bloco-foto img:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: var(--gh-shadow-strong);
+}
+
+/* ===== Gráficos ===== */
+#tela-graficos { background: var(--gh-bg) !important; color: var(--gh-ink) !important; }
+#tela-graficos h1 { color: var(--gh-leaf) !important; }
+.graficos-container { gap: 20px !important; }
+.grafico-bloco {
+  background: #ffffff !important;
+  border: 1px solid #eadfcd !important;
+  border-radius: var(--gh-radius) !important;
+  box-shadow: var(--gh-shadow) !important;
+}
+.grafico-bloco h2 { color: #3d5a40 !important; text-transform: none !important; font-weight: 600; }
+
+small { color: #5e6a5f; }
