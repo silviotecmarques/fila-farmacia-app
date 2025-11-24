@@ -1,6 +1,6 @@
 {
   "name": "sistema-de-fila",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Sistema de fila para farmácia",
   "main": "main.js",
   "author": "Silvio",
