@@ -5,16 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sistema de Fila - Farmácia</title>
 
-  <!-- CSS base -->
   <link rel="stylesheet" href="style/main.css" />
 
-  <!-- Tema Studio Ghibli -->
   <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;600;800&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style/ghibli-theme.css" />
 </head>
 <body>
 
-  <!-- TELA 1: ATENDIMENTO ATUAL -->
   <div id="tela-fila">
     <h1>ATENDIMENTO ATUAL</h1>
 
@@ -24,7 +21,6 @@
         <img id="foto-atual" src="assets/icons/sem-atendimento.png" alt="Sem atendimento">
       </div>
 
-      <!-- Botões -->
       <div id="botoes-container">
         <button id="btn-atendi">
           <img src="assets/icons/atendi.png" class="icon-btn" alt="" /> ATENDI
@@ -35,10 +31,8 @@
       </div>
     </div>
 
-    <!-- CARDS DA FILA -->
     <div id="cards-fila" class="cards-container"></div>
 
-    <!-- TABELA -->
     <table id="tabela-fila">
       <thead>
         <tr>
@@ -54,16 +48,73 @@
     </table>
   </div>
 
-  <!-- TELA 2: GESTÃO DA FILA -->
   <section id="tela-gestao" style="display: none;">
     <h1>Gestão da Fila</h1>
+    
     <div id="balconistas-container"></div>
-    <button id="btn-ok">
-      <img src="assets/icons/ok.png" class="icon-btn" alt="" /> VOLTAR
-    </button>
+    
+    <div id="gestao-actions">
+        <button id="btn-toggle-deletion" class="btn-toggle-deletion">
+            MODO DELEÇÃO
+        </button>
+        
+        <button id="btn-adicionar-balconista">
+            <span style="font-size: 1.2em; margin-right: 5px;">+</span> ADICIONAR NOVO
+        </button>
+        
+        <button id="btn-ok">
+            <img src="assets/icons/ok.png" class="icon-btn" alt="" /> VOLTAR
+        </button>
+    </div>
   </section>
 
-  <!-- SCRIPTS -->
+  <div id="modal-overlay" style="display: none;">
+      <div id="modal-content">
+          <h2>Adicionar Novo Balconista</h2>
+          <form id="modal-add-form">
+              <div class="form-group">
+                  <label for="modal-nome">Nome Completo:</label>
+                  <input type="text" id="modal-nome" required>
+              </div>
+              
+              <div class="form-group">
+                  <label>Selecione a Foto:</label>
+
+                  <div id="image-gallery">
+                      </div>
+                  
+                  <p style="text-align: center; margin: 15px 0;">— OU —</p>
+
+                  <div style="text-align: center;">
+                      <input type="file" id="modal-image-file" accept="image/png, image/jpeg" style="display: none;">
+                      <button type="button" id="btn-selecionar-imagem-modal" class="btn-primary">
+                          Carregar do Computador
+                      </button>
+                  </div>
+              </div>
+
+              <div id="modal-image-preview-container" style="text-align: center; margin: 20px 0;">
+                  <label>Prévia:</label>
+                  <div id="modal-image-preview">
+                      <span style="color: #8b8680; font-size: 14px;">Nenhuma Imagem Selecionada</span>
+                  </div>
+              </div>
+              
+              <p id="modal-status" style="color: #d64949; font-size: 14px; text-align: center; margin: 15px 0;"></p>
+              
+              <div class="actions" style="display: flex; justify-content: space-between; margin-top: 20px;">
+                  <button type="button" id="btn-cancelar-modal" class="btn-cancelar">
+                      CANCELAR
+                  </button>
+                  <button type="submit" id="btn-salvar-modal" disabled>
+                      SALVAR BALCONISTA
+                  </button>
+              </div>
+          </form>
+      </div>
+  </div>
+
+
   <script src="renderer/app.js"></script>
 </body>
 </html>
