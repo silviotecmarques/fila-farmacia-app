@@ -9,7 +9,7 @@ const DEFAULT_BALCONISTAS = [
   { nome: "Franciete", id: "franciete" },
   { nome: "Eriane", id: "eriane" },
   { nome: "Taynan", id: "taynan" },
-  { nome: "Taina", id: "taina" }
+  { nome: "Taina", id: "taina" } // NOME ATUALIZADO
 ];
 
 // Opções da Galeria (Usando as 6 imagens que você forneceu - DEVE ESTAR EM assets/fotos/galeria/)
@@ -245,18 +245,32 @@ function handleImageSelect(file) {
 // 4. Lógica de Salvar Balconista (Simulando o Main Process)
 function saveNewBalconista(nome, id, base64Image) {
     
-    // Armazena a Base64 para renderização
-    balconistas.push({ 
-        nome: nome, 
-        id: id,
-        base64: base64Image 
-    });
-    saveState(); 
+    // NOVO: Mostrar o spinner e desabilitar o botão
+    btnSalvarModal.classList.add('loading');
+    btnSalvarModal.disabled = true;
 
-    closeAddModal();
-    montarTela2();
-    atualizarTela1();
-    console.log(`Balconista '${nome}' adicionado. (Lembrete: A imagem Base64 precisa ser salva em assets/fotos/${id}-colorida.png no Main Process para persistência real do arquivo.)`);
+    // Usamos setTimeout para simular o tempo de processamento/salvamento do disco (1.5 segundos)
+    setTimeout(() => {
+        
+        // --- INÍCIO DA AÇÃO REAL DE SALVAMENTO ---
+        // Armazena a Base64 para renderização
+        balconistas.push({ 
+            nome: nome, 
+            id: id,
+            base64: base64Image 
+        });
+        saveState(); 
+        // --- FIM DA AÇÃO REAL DE SALVAMENTO ---
+        
+        // Esconder o spinner e reabilitar o botão
+        btnSalvarModal.classList.remove('loading');
+        
+        closeAddModal();
+        montarTela2();
+        atualizarTela1();
+        console.log(`Balconista '${nome}' adicionado. (Simulação de salvamento concluída)`);
+
+    }, 1500); // 1.5 segundos para mostrar o Pac-Man
 }
 
 
@@ -309,7 +323,7 @@ modalForm.onsubmit = (e) => {
         return;
     }
 
-    // Chamada para a função de salvamento (simulação)
+    // Chamada para a função de salvamento (com spinner)
     saveNewBalconista(nome, id, selectedImageBase64);
 };
 
@@ -364,7 +378,7 @@ btnGestao.onclick = () => {
 };
 
 btnOk.onclick = () => {
-  // Se o modo de deleção estiver ativo, apenas CANCELA o modo, permanecendo na tela de Gestão.
+  // FIX: Se o modo de deleção estiver ativo, apenas CANCELA o modo, permanecendo na tela de Gestão.
   if (isDeletionMode) {
       toggleDeletionMode();
   } else {
@@ -456,7 +470,7 @@ function montarTela2() {
   balconistas.forEach(b => {
     const naFila = fila.find(p => p.id === b.id);
     
-    // NOVO: Encontra a posição real na fila (retorna -1 se não estiver na fila)
+    // Encontra a posição real na fila (retorna -1 se não estiver na fila)
     const positionIndex = fila.findIndex(p => p.id === b.id);
     
     const bloco = document.createElement("div");
@@ -485,7 +499,7 @@ function montarTela2() {
     let nomeTexto = b.nome;
     
     // ATUALIZAÇÃO: Exibe a ordem real da fila (só se não estiver no modo deleção)
-    if (positionIndex >= 0 && !isDeletionMode) {
+    if (positionIndex >= 0 && !isDeletionMode) { 
         const ordem = positionIndex + 1; // 0-based index -> 1-based order
         nomeTexto = `${ordem}º - ${b.nome}`;
     }

@@ -1,8 +1,14 @@
-const { app, BrowserWindow, session } = require('electron');
+const { app, BrowserWindow, session, dialog } = require('electron');
 const path = require('path');
+const { autoUpdater } = require('electron-updater'); 
+const log = require('electron-log'); 
 
-let win; // para single-instance/focus
+let win; 
 const isProd = app.isPackaged;
+
+// Configuração para evitar logs no console em ambiente de produção
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = "info";
 
 function createWindow() {
   win = new BrowserWindow({
@@ -30,7 +36,6 @@ function createWindow() {
   });
 
   // Anti-cópia / anti-vazamento (nível janela)
-  // session: bloqueia downloads
   session.defaultSession?.on('will-download', (e) => e.preventDefault());
 
   // Bloqueia atalhos de cópia/salvar/imprimir e DevTools
@@ -52,10 +57,6 @@ function createWindow() {
   // Impede abrir novas janelas/abas
   win.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
 
-  // Opcional: impedir screenshot/gravação de tela do conteúdo (Windows/macOS)
-  // ATENÇÃO: isso pode atrapalhar suporte e demonstrações.
-  // win.setContentProtection(true);
-
   win.on('closed', () => { win = null; });
 }
 
@@ -76,9 +77,38 @@ if (!gotLock) {
     app.on('activate', () => {
       if (BrowserWindow.getAllWindows().length === 0) createWindow();
     });
+
+    // NOVO: Verifica atualização imediatamente na inicialização
+    if (isProd) {
+        log.info('Iniciando verificação de auto-atualização...');
+        setTimeout(() => {
+            autoUpdater.checkForUpdatesAndNotify();
+        }, 500); 
+    }
   });
 }
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
+});
+
+
+// Lógica de eventos do Auto Updater
+autoUpdater.on('update-downloaded', (info) => {
+  const dialogOpts = {
+    type: 'info',
+    buttons: ['Reiniciar', 'Mais tarde'],
+    title: 'Atualização Disponível',
+    message: process.platform === 'win32' ? info.releaseNotes : info.releaseName,
+    detail: 'Uma nova versão foi baixada. Reinicie o aplicativo para aplicar a atualização.'
+  };
+
+  dialog.showMessageBox(dialogOpts).then((returnValue) => {
+    if (returnValue.response === 0) autoUpdater.quitAndInstall();
+  });
+});
+
+autoUpdater.on('error', (message) => {
+  log.error('Houve um problema ao tentar atualizar o aplicativo.');
+  log.error(message);
 });
