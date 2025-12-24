@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sistema de Fila - Farmácia</title>
+  <title>SISTEMA ELYSE (v1.0.6) — Farmácia Maxi Popular</title>
 
   <link rel="stylesheet" href="style/main.css" />
-
   <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;600;800&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style/ghibli-theme.css" />
 </head>
@@ -25,6 +24,11 @@
         <button id="btn-atendi">
           <img src="assets/icons/atendi.png" class="icon-btn" alt="" /> ATENDI
         </button>
+
+        <button id="btn-pular">
+           <img src="assets/icons/pular.png" class="icon-btn" alt="" /> PASSAR
+        </button>
+
         <button id="btn-gestao">
           <img src="assets/icons/config.png" class="icon-btn" alt="" /> FILA
         </button>
@@ -50,20 +54,16 @@
 
   <section id="tela-gestao" style="display: none;">
     <h1>Gestão da Fila</h1>
-    
     <div id="balconistas-container"></div>
-    
     <div id="gestao-actions">
         <button id="btn-toggle-deletion" class="btn-toggle-deletion">
-            EXCLUIR
+            <img src="assets/icons/lixeira.png" class="icon-btn" /> EXCLUIR
         </button>
-        
         <button id="btn-adicionar-balconista">
-            <span style="font-size: 1.2em; margin-right: 5px;">+</span> ADICIONAR NOVO
+            <img src="assets/icons/adicionar.png" class="icon-btn" /> ADICIONAR NOVO
         </button>
-        
         <button id="btn-ok">
-            <img src="assets/icons/ok.png" class="icon-btn" alt="" /> VOLTAR
+            <img src="assets/icons/voltar.png" class="icon-btn" /> VOLTAR
         </button>
     </div>
   </section>
@@ -76,15 +76,10 @@
                   <label for="modal-nome">Nome Completo:</label>
                   <input type="text" id="modal-nome" required>
               </div>
-              
               <div class="form-group">
                   <label>Selecione a Foto:</label>
-
-                  <div id="image-gallery">
-                      </div>
-                  
+                  <div id="image-gallery"></div>
                   <p style="text-align: center; margin: 15px 0;">— OU —</p>
-
                   <div style="text-align: center;">
                       <input type="file" id="modal-image-file" accept="image/png, image/jpeg" style="display: none;">
                       <button type="button" id="btn-selecionar-imagem-modal" class="btn-primary">
@@ -92,27 +87,19 @@
                       </button>
                   </div>
               </div>
-
               <div id="modal-image-preview-container" style="text-align: center; margin: 20px 0;">
                   <label>Prévia:</label>
                   <div id="modal-image-preview">
                       <span style="color: #8b8680; font-size: 14px;">Nenhuma Imagem Selecionada</span>
                   </div>
               </div>
-              
               <p id="modal-status" style="color: #d64949; font-size: 14px; text-align: center; margin: 15px 0;"></p>
-              
               <div class="actions" style="display: flex; justify-content: space-between; margin-top: 20px;">
-                  <button type="button" id="btn-cancelar-modal" class="btn-cancelar">
-                      CANCELAR
-                  </button>
+                  <button type="button" id="btn-cancelar-modal" class="btn-cancelar">CANCELAR</button>
                   <button type="submit" id="btn-salvar-modal" disabled>
                       <span class="button-text">SALVAR BALCONISTA</span>
                       <div class="pacman-loader">
-                          <div class="pacman"></div>
-                          <div class="dot"></div>
-                          <div class="dot"></div>
-                          <div class="dot"></div>
+                          <div class="pacman"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
                       </div>
                   </button>
               </div>
@@ -120,6 +107,33 @@
       </div>
   </div>
 
+  <div id="modal-ajuda" style="display: none;">
+      <div class="ajuda-content">
+          <h2>🤖 Central de Ajuda da Elyse</h2>
+          <div class="ajuda-item">
+              <strong>💡 Como usar o sistema:</strong>
+              <ul>
+                  <li><span style="color:#4f8d4f"><b>ATENDI:</b></span> Chama o próximo da fila e registra o atendimento.</li>
+                  <li><span style="color:#d35400"><b>PASSAR:</b></span> Joga o balconista atual para o fim da fila (caso precise sair rapidinho).</li>
+                  <li><span style="color:#2c3e50"><b>FILA:</b></span> Abre a tela de gestão para adicionar ou remover balconistas.</li>
+              </ul>
+          </div>
+          <div class="ajuda-footer" style="justify-content: center;">
+              <button id="btn-fechar-ajuda">ENTENDI</button>
+          </div>
+      </div>
+  </div>
+
+  <div id="mascote-container">
+      <div id="mascote-balao" class="hidden">Olá!</div>
+      <img id="mascote-img" src="assets/mascote-idle.gif" alt="Mascote">
+  </div>
+
+  <div class="news-ticker">
+    <div class="ticker-content">
+      🔄 BUSCANDO NOTÍCIAS...
+    </div>
+  </div>
 
   <script src="renderer/app.js"></script>
 </body>

@@ -1,114 +1,99 @@
-const { app, BrowserWindow, session, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
-const { autoUpdater } = require('electron-updater'); 
-const log = require('electron-log'); 
+const Parser = require('rss-parser');
 
-let win; 
-const isProd = app.isPackaged;
-
-// Configuração para evitar logs no console em ambiente de produção
-autoUpdater.logger = log;
-autoUpdater.logger.transports.file.level = "info";
+// Configuração para evitar bloqueios de sites
+const parser = new Parser({
+  headers: {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36',
+  },
+  timeout: 10000 
+});
 
 function createWindow() {
-  win = new BrowserWindow({
-    show: false,               // só mostra quando estiver pronto
-    resizable: false,          // sem redimensionar manual
-    maximizable: true,         // pode maximizar
-    minimizable: true,         // pode minimizar
-    autoHideMenuBar: true,     // ALT mostra/oculta menu
-    backgroundColor: '#f6f1e7',
+  const win = new BrowserWindow({
+    width: 1200,
+    height: 800,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
-      contextIsolation: true,  // segurança
-      nodeIntegration: false,  // segurança
-      devTools: !isProd        // DevTools só em dev
+      nodeIntegration: false,
+      contextIsolation: true
     }
   });
 
-  // Carrega o app
   win.loadFile('index.html');
-
-  // Maximize & mostrar quando estiver pronto (sem flicker)
-  win.once('ready-to-show', () => {
-    try { win.maximize(); } catch {}
-    win.show();
-  });
-
-  // Anti-cópia / anti-vazamento (nível janela)
-  session.defaultSession?.on('will-download', (e) => e.preventDefault());
-
-  // Bloqueia atalhos de cópia/salvar/imprimir e DevTools
-  win.webContents.on('before-input-event', (event, input) => {
-    const k = (input.key || '').toLowerCase();
-    const combo = input.control || input.meta;
-    if (combo && ['c','x','a','s','p'].includes(k)) event.preventDefault();      // Ctrl/⌘ + C/X/A/S/P
-    if (k === 'f12' || (combo && input.shift && k === 'i')) event.preventDefault(); // F12 / Ctrl+Shift+I
-  });
-
-  // Bloqueia menu de contexto (clique direito)
-  win.webContents.on('context-menu', (e) => e.preventDefault());
-
-  // Impede navegar para fora do index.html
-  win.webContents.on('will-navigate', (e, url) => {
-    if (!url.startsWith('file://')) e.preventDefault();
-  });
-
-  // Impede abrir novas janelas/abas
-  win.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
-
-  win.on('closed', () => { win = null; });
+  // win.setMenuBarVisibility(false); // Tire o comentário para esconder o menu superior
 }
 
-/* Garante instância única */
-const gotLock = app.requestSingleInstanceLock();
-if (!gotLock) {
-  app.quit();
-} else {
-  app.on('second-instance', () => {
-    if (win) {
-      if (win.isMinimized()) win.restore();
-      win.focus();
+app.whenReady().then(() => {
+  createWindow();
+
+  app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createWindow();
     }
   });
-
-  app.whenReady().then(() => {
-    createWindow();
-    app.on('activate', () => {
-      if (BrowserWindow.getAllWindows().length === 0) createWindow();
-    });
-
-    // NOVO: Verifica atualização imediatamente na inicialização
-    if (isProd) {
-        log.info('Iniciando verificação de auto-atualização...');
-        setTimeout(() => {
-            autoUpdater.checkForUpdatesAndNotify();
-        }, 500); 
-    }
-  });
-}
+});
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit();
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
 });
 
+// --- API DE NOTÍCIAS (10 ITENS RECENTES) ---
+ipcMain.handle('buscar-noticias', async () => {
+  console.log("--- BUSCANDO NOTÍCIAS ---");
+  
+  try {
+    const fontes = [
+      'https://news.google.com/rss/search?q=saude+brasil&hl=pt-BR&gl=BR&ceid=BR:pt-419', // Google News
+      'http://rss.uol.com.br/feed/vivabem.xml' // UOL VivaBem
+    ];
 
-// Lógica de eventos do Auto Updater
-autoUpdater.on('update-downloaded', (info) => {
-  const dialogOpts = {
-    type: 'info',
-    buttons: ['Reiniciar', 'Mais tarde'],
-    title: 'Atualização Disponível',
-    message: process.platform === 'win32' ? info.releaseNotes : info.releaseName,
-    detail: 'Uma nova versão foi baixada. Reinicie o aplicativo para aplicar a atualização.'
-  };
+    let todasNoticias = [];
 
-  dialog.showMessageBox(dialogOpts).then((returnValue) => {
-    if (returnValue.response === 0) autoUpdater.quitAndInstall();
-  });
-});
+    for (const url of fontes) {
+      try {
+        const feed = await parser.parseURL(url);
+        
+        if (feed && feed.items) {
+            feed.items.forEach(item => {
+                const dataNoticia = new Date(item.pubDate);
+                const hoje = new Date();
+                const diferencaDias = (hoje - dataNoticia) / (1000 * 3600 * 24);
 
-autoUpdater.on('error', (message) => {
-  log.error('Houve um problema ao tentar atualizar o aplicativo.');
-  log.error(message);
+                // Só aceita notícias com menos de 5 dias
+                if (diferencaDias < 5) {
+                    todasNoticias.push({
+                        titulo: item.title.trim().toUpperCase(),
+                        data: dataNoticia
+                    });
+                }
+            });
+        }
+      } catch (erroSite) {
+        console.log(`Erro ao ler site:`, erroSite.message);
+      }
+    }
+
+    // Ordena da mais nova para a mais velha
+    todasNoticias.sort((a, b) => b.data - a.data);
+
+    // PEGA AS 10 PRIMEIRAS
+    const manchetes = todasNoticias.slice(0, 10).map(n => n.titulo);
+
+    if (manchetes.length === 0) {
+      return "SEM NOTÍCIAS RECENTES NO MOMENTO";
+    }
+
+    // Limpa o nome do site no final
+    const manchetesLimpas = manchetes.map(t => t.split(' - ')[0]);
+
+    return manchetesLimpas.join(' — 🩺 — ');
+
+  } catch (error) {
+    console.error("Erro geral:", error);
+    return "SISTEMA ONLINE - FARMÁCIA MAXI POPULAR"; 
+  }
 });
