@@ -1,4 +1,4 @@
-// renderer/app.js - VERSÃO FINAL (Drag and Drop + Fila + News)
+// renderer/app.js
 
 const DEFAULT_BALCONISTAS = [
   { nome: "Wendeel", id: "wendeel" },
@@ -74,8 +74,7 @@ function verificarEstadoFila() {
     }
 }
 
-// --- ARRASTAR E SOLTAR (DRAG AND DROP) ---
-// Carrega posição salva
+// ARRASTAR E SOLTAR
 const savedPos = localStorage.getItem('mascotePosicao');
 if (savedPos) {
     const pos = JSON.parse(savedPos);
@@ -120,17 +119,12 @@ if (mascoteImg) {
     window.onmouseup = () => {
         if (!isDragging) return;
         isDragging = false;
-        container.style.cursor = 'move';
+        container.style.cursor = 'grab';
 
         if (didMove) {
-            // Se arrastou, salva posição
             const rect = container.getBoundingClientRect();
-            localStorage.setItem('mascotePosicao', JSON.stringify({
-                x: rect.left,
-                y: rect.top
-            }));
+            localStorage.setItem('mascotePosicao', JSON.stringify({ x: rect.left, y: rect.top }));
         } else {
-            // Se foi clique, abre ajuda
             const modalAjuda = document.getElementById('modal-ajuda');
             if (modalAjuda) {
                 modalAjuda.style.display = 'flex';
@@ -139,7 +133,6 @@ if (mascoteImg) {
         }
     };
 
-    // Hover (Interação visual)
     mascoteImg.onmouseenter = () => {
         if (!isDragging && !timeoutSucesso) {
             setMascote('duvida');
@@ -151,10 +144,8 @@ if (mascoteImg) {
     };
 }
 
-// Botão Fechar Ajuda
 const btnFecharAjuda = document.getElementById('btn-fechar-ajuda');
 const modalAjuda = document.getElementById('modal-ajuda');
-
 if (btnFecharAjuda && modalAjuda) {
     btnFecharAjuda.onclick = () => {
         modalAjuda.style.display = 'none';
@@ -168,63 +159,77 @@ if (btnFecharAjuda && modalAjuda) {
     };
 }
 
-// --- FRASES E FALA ---
-const FRASES_ALEATORIAS = [
-    "Já bebeu água hoje? Hidratação é vida! 💧",
-    "Sorriso no rosto, cliente satisfeito! 😄",
-    "Organização facilita tudo, né? ✨",
-    "Força na peruca! Estamos indo bem! 💪",
-    "De olho na validade dos lotes! 👀",
-    "Hoje o dia promete! 🚀",
-    "Bora bater a meta de hoje? 🎯"
-];
-const FRASES_FILA_VAZIA = [
-    "Fila zerada! Vou adiantar uns relatórios... 💻",
-    "Tudo calmo... hora daquele cafezinho? ☕",
-    "Aproveita para organizar o balcão! 📦",
-    "Sem filas por enquanto. Paz total. 🍃"
-];
-const FRASES_FILA_CHEIA = [
-    "Nossa, a loja encheu! Vamos lá! 😲",
-    "Foco total, equipe! Tem gente esperando! ⚡",
-    "Agilidade e simpatia, esse é o segredo! 🏃‍♀️",
-    "Casa cheia! Respirem fundo e sorriam! 🧘‍♀️"
-];
+// FALAS E BUBBLES
+let balaoTimeout = null;
 
 function falar(texto) {
     if (!mascoteBalao) return;
+    if (balaoTimeout) clearTimeout(balaoTimeout);
+    
     mascoteBalao.textContent = texto;
     mascoteBalao.classList.add('visible');
-    setTimeout(() => {
+    
+    balaoTimeout = setTimeout(() => {
         mascoteBalao.classList.remove('visible');
-    }, 5000);
+        balaoTimeout = null;
+    }, 4000);
 }
 
+// LOOP DE FALAS INTELIGENTE
 setInterval(() => {
+    // Carrega o banco de falas ou usa backup
+    const bancoFalas = window.FALAS_ELYSE || { 
+        aleatorias: ["Olá!"], filaVazia: ["..."], filaCheia: ["!"], 
+        bomDia: ["Bom dia!"], boaTarde: ["Boa tarde!"], boaNoite: ["Boa noite!"] 
+    };
+
+    // A cada 20 segundos, tem 50% de chance de falar
     if (Math.random() > 0.5) { 
         let fraseEscolhida = "";
-        const hora = new Date().getHours();
+        const hora = new Date().getHours(); // Pega a hora atual (0 a 23)
+        
+        // 1. Prioridade: Tamanho da Fila
         if (fila.length === 0) {
-            fraseEscolhida = FRASES_FILA_VAZIA[Math.floor(Math.random() * FRASES_FILA_VAZIA.length)];
+            // Fila Vazia
+            const lista = bancoFalas.filaVazia;
+            fraseEscolhida = lista[Math.floor(Math.random() * lista.length)];
         } else if (fila.length > 5) {
-            fraseEscolhida = FRASES_FILA_CHEIA[Math.floor(Math.random() * FRASES_FILA_CHEIA.length)];
+            // Fila Cheia
+            const lista = bancoFalas.filaCheia;
+            fraseEscolhida = lista[Math.floor(Math.random() * lista.length)];
         } else {
-            if (hora < 12 && Math.random() > 0.7) {
-                fraseEscolhida = "Bom dia, equipe! ☀️";
-            } else if (hora >= 18 && Math.random() > 0.7) {
-                fraseEscolhida = "Boa noite! Quase na hora de fechar? 🌙";
+            // 2. Situação Normal (Fila entre 1 e 5 pessoas)
+            // Tem 20% de chance de dar uma saudação de horário
+            
+            const chanceSaudacao = Math.random() > 0.8; // 20% de chance
+
+            if (hora < 12 && chanceSaudacao) {
+                // MANHÃ (Até 11:59)
+                const lista = bancoFalas.bomDia;
+                fraseEscolhida = lista[Math.floor(Math.random() * lista.length)];
+
+            } else if (hora >= 12 && hora < 18 && chanceSaudacao) {
+                // TARDE (12:00 até 17:59)
+                const lista = bancoFalas.boaTarde || ["Boa tarde, equipe!"];
+                fraseEscolhida = lista[Math.floor(Math.random() * lista.length)];
+
+            } else if (hora >= 18 && chanceSaudacao) {
+                // NOITE (18:00 em diante)
+                const lista = bancoFalas.boaNoite;
+                fraseEscolhida = lista[Math.floor(Math.random() * lista.length)];
+
             } else {
-                fraseEscolhida = FRASES_ALEATORIAS[Math.floor(Math.random() * FRASES_ALEATORIAS.length)];
+                // FRASES DE TRABALHO (Aleatórias Gerais)
+                const lista = bancoFalas.aleatorias;
+                fraseEscolhida = lista[Math.floor(Math.random() * lista.length)];
             }
         }
         falar(fraseEscolhida);
     }
-}, 20000);
+}, 20000); 
 
 // --- LÓGICA DA FILA ---
-function todayKey() {
-    return new Date().toDateString();
-}
+function todayKey() { return new Date().toDateString(); }
 
 function saveState() {
     try {
@@ -235,9 +240,7 @@ function saveState() {
         localStorage.setItem('tempoTotalEspera', JSON.stringify(tempoTotalEspera));
         localStorage.setItem('horasUltimoAtendimento', JSON.stringify(horasUltimoAtendimento));
         localStorage.setItem('lastSavedDate', todayKey()); 
-    } catch(e) {
-        console.error("Erro ao salvar estado:", e);
-    }
+    } catch(e) { console.error(e); }
 }
 
 function loadState() {
@@ -245,7 +248,6 @@ function loadState() {
         const storedBalconistas = localStorage.getItem('balconistas');
         balconistas = storedBalconistas ? JSON.parse(storedBalconistas) : DEFAULT_BALCONISTAS;
         
-        console.log("Iniciando nova sessão. Resetando fila e tempos.");
         fila = [];
         tempoFila = {};
         tempoRelogio = {}; 
@@ -258,9 +260,7 @@ function loadState() {
         localStorage.removeItem('atendimentos');
         localStorage.removeItem('tempoTotalEspera');
         localStorage.removeItem('horasUltimoAtendimento');
-        
     } catch(e) {
-        console.error("Erro ao carregar estado:", e);
         balconistas = DEFAULT_BALCONISTAS;
     }
 }
@@ -287,15 +287,10 @@ const modalImagePreview = document.getElementById('modal-image-preview');
 const modalStatus = document.getElementById('modal-status');
 const modalForm = document.getElementById('modal-add-form');
 const imageGallery = document.getElementById('image-gallery'); 
-
 let selectedImageBase64 = null;
 
 function slugify(text) {
-  return text.toLowerCase()
-    .normalize("NFD").replace(/[\u0300-\u036f]/g, "") 
-    .replace(/[^\w\s-]/g, '') 
-    .trim()
-    .replace(/[-\s]+/g, '-');
+  return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^\w\s-]/g, '').trim().replace(/[-\s]+/g, '-');
 }
 
 function getBase64FromPath(path, callback) {
@@ -309,37 +304,27 @@ function getBase64FromPath(path, callback) {
         const dataUrl = canvas.toDataURL('image/png'); 
         callback(dataUrl.split(',')[1]);
     };
-    img.onerror = function() {
-        console.error(`Erro ao carregar imagem de galeria: ${path}`);
-        callback(null);
-    };
+    img.onerror = function() { callback(null); };
     img.src = path;
 }
 
 function renderImageGallery() {
     imageGallery.innerHTML = '';
-    GALLERY_OPTIONS.forEach((option, index) => {
+    GALLERY_OPTIONS.forEach((option) => {
         const div = document.createElement('div');
         div.classList.add('gallery-option');
         const img = document.createElement('img');
         img.src = option.path;
-        img.alt = option.name;
-        img.title = option.name;
         div.appendChild(img);
         div.onclick = () => {
             document.querySelectorAll('.gallery-option').forEach(el => el.classList.remove('selected'));
             div.classList.add('selected');
             modalImageFileInput.value = '';
-            modalStatus.textContent = 'Carregando Base64...';
+            modalStatus.textContent = 'Carregando...';
             getBase64FromPath(option.path, (base64) => {
-                if (base64) {
-                    selectedImageBase64 = base64;
-                    modalImagePreview.innerHTML = `<img src="data:image/png;base64,${base64}" alt="Preview">`;
-                    modalStatus.textContent = `Imagem '${option.name}' selecionada.`;
-                } else {
-                    modalStatus.textContent = 'Erro ao carregar a imagem da galeria.';
-                    selectedImageBase64 = null;
-                }
+                selectedImageBase64 = base64;
+                modalImagePreview.innerHTML = `<img src="data:image/png;base64,${base64}" alt="Preview">`;
+                modalStatus.textContent = 'Selecionada.';
                 updateModalSaveButton();
             });
         };
@@ -354,7 +339,7 @@ function openAddModal() {
     selectedImageBase64 = null;
     btnSalvarModal.disabled = true;
     modalStatus.textContent = '';
-    modalImagePreview.innerHTML = `<span style="color: #8b8680; font-size: 14px;">Nenhuma Imagem Selecionada</span>`;
+    modalImagePreview.innerHTML = `<span style="color: #8b8680;">Nenhuma Imagem</span>`;
     document.querySelectorAll('.gallery-option').forEach(el => el.classList.remove('selected'));
     modalNomeInput.focus();
 }
@@ -362,19 +347,12 @@ function openAddModal() {
 function closeAddModal() { modalOverlay.style.display = 'none'; }
 
 function handleImageSelect(file) {
-    if (!file || !file.type.startsWith('image/')) {
-        modalStatus.textContent = 'Selecione um arquivo de imagem válido.';
-        selectedImageBase64 = null;
-        return;
-    }
+    if (!file || !file.type.startsWith('image/')) return;
     const reader = new FileReader();
     reader.onload = (e) => {
-        const base64Data = e.target.result.split(',')[1];
-        selectedImageBase64 = base64Data;
+        selectedImageBase64 = e.target.result.split(',')[1];
         modalImagePreview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
-        modalStatus.textContent = 'Imagem do PC carregada.';
         updateModalSaveButton();
-        document.querySelectorAll('.gallery-option').forEach(el => el.classList.remove('selected'));
     };
     reader.readAsDataURL(file);
 }
@@ -408,14 +386,7 @@ modalForm.onsubmit = (e) => {
     if (btnSalvarModal.disabled) return;
     const nome = modalNomeInput.value.trim();
     const id = slugify(nome);
-    if (balconistas.some(b => b.id === id)) {
-        modalStatus.textContent = `Erro: O ID '${id}' já existe.`;
-        return;
-    }
-    if (!selectedImageBase64) {
-        modalStatus.textContent = 'Erro: Imagem não carregada.';
-        return;
-    }
+    if (balconistas.some(b => b.id === id)) return;
     saveNewBalconista(nome, id, selectedImageBase64);
 };
 
@@ -431,7 +402,7 @@ function atualizarTela1() {
       }
     }, 50);
   } else {
-    nomeAtual.textContent = "SEM ATENDIMENTOS NO MOMENTO";
+    nomeAtual.textContent = "SEM ATENDIMENTOS";
     fotoAtual.src = "assets/icons/sem-atendimento.png";
   }
   atualizarTabelaFila();
@@ -523,17 +494,14 @@ btnToggleDeletion.onclick = () => {
             toggleDeletionMode();
             return;
         }
-        if (!confirm(`Tem certeza que deseja remover PERMANENTEMENTE ${idsToRemove.length} balconista(s)?`)) {
-            return;
-        }
+        if (!confirm(`Excluir ${idsToRemove.length} balconista(s)?`)) return;
+        
         idsToRemove.forEach(id => {
             balconistas = balconistas.filter(p => p.id !== id);
             fila = fila.filter(p => p.id !== id);
             delete tempoFila[id];
             delete tempoRelogio[id];
             delete atendimentos[id];
-            delete tempoTotalEspera[id];
-            delete horasUltimoAtendimento[id];
         });
         toggleDeletionMode(); 
         saveState();
@@ -611,7 +579,6 @@ function atualizarCardsFila() {
   fila.slice(0, 3).forEach((b, i) => {
     if (!b || !b.id) return; 
     const id = b.id;
-    const pos = i + 1;
     const card = document.createElement("div");
     card.classList.add("card-fila");
     const img = document.createElement("img");
@@ -623,7 +590,7 @@ function atualizarCardsFila() {
     }
     const title = document.createElement("div");
     title.classList.add("card-title");
-    title.textContent = `${pos}º - ${b.nome}`;
+    title.textContent = `${i + 1}º - ${b.nome}`;
     card.appendChild(img);
     card.appendChild(title);
     container.appendChild(card);
@@ -642,14 +609,7 @@ function atualizarTabelaFila() {
     const hora = horasUltimoAtendimento[id] || "--:--";
     const relogio = i === 0 ? ` <small>(${formatarTempo(tempoRelogio[id] || 0)})</small>` : "";
     const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${i + 1}º</td>
-      <td>${b.nome}${relogio}</td>
-      <td>${qtd}</td>
-      <td>${hora}</td>
-      <td>${formatarTempo(media)}</td>
-      <td>${formatarTempo(total)}</td>
-    `;
+    tr.innerHTML = `<td>${i + 1}º</td><td>${b.nome}${relogio}</td><td>${qtd}</td><td>${hora}</td><td>${formatarTempo(media)}</td><td>${formatarTempo(total)}</td>`;
     tbody.appendChild(tr);
   });
 }
@@ -681,7 +641,6 @@ function formatarTempo(seg) {
 
 atualizarTela1();
 
-// --- ATUALIZADOR DE NOTÍCIAS (LETREIRO) ---
 async function atualizarLetreiro() {
     const letreiro = document.querySelector('.ticker-content');
     if (!letreiro) return;
@@ -689,61 +648,37 @@ async function atualizarLetreiro() {
         const avisosFixos = "🚀 <b>BOM TRABALHO EQUIPE!</b> — 💊 CONFIRA A VALIDADE DOS LOTES";
         const textoNoticias = await window.api.buscarNoticias();
         letreiro.innerHTML = `${avisosFixos} — 🌍 <b>NOTÍCIAS AGORA:</b> ${textoNoticias}`;
-    } catch (error) {
-        console.error("Erro no letreiro:", error);
-    }
+    } catch (error) { console.error(error); }
 }
 
 atualizarLetreiro();
-setInterval(atualizarLetreiro, 600000); // 10 minutos
+setInterval(atualizarLetreiro, 600000); 
 
-// --- ATALHOS DE TECLADO (NOVO) ---
 document.addEventListener('keydown', (e) => {
-    // 1. Se estiver digitando num input (ex: nome do balconista), ignora os atalhos
     if (e.target.tagName === 'INPUT') return;
-
-    // 2. Se algum modal estiver aberto (Ajuda ou Adicionar), ignora
     const modalAdd = document.getElementById('modal-overlay');
     const modalHelp = document.getElementById('modal-ajuda');
-    if ((modalAdd && modalAdd.style.display === 'flex') || 
-        (modalHelp && modalHelp.style.display === 'flex')) {
-        
-        // Se apertar ESC com modal aberto, fecha o modal
+    if ((modalAdd && modalAdd.style.display === 'flex') || (modalHelp && modalHelp.style.display === 'flex')) {
         if (e.key === 'Escape') {
             if (modalAdd.style.display === 'flex') closeAddModal();
-            if (modalHelp.style.display === 'flex') {
-                modalHelp.style.display = 'none';
-                verificarEstadoFila();
-            }
+            if (modalHelp.style.display === 'flex') { modalHelp.style.display = 'none'; verificarEstadoFila(); }
         }
         return;
     }
-
-    // 3. Atalhos Principais
     switch(e.key) {
-        case ' ':       // Barra de Espaço
-        case 'Enter':   // Enter
-            e.preventDefault(); // Impede a tela de descer
-            if (btnAtendi) {
-                btnAtendi.click(); // Simula o clique
-                btnAtendi.classList.add('active'); // Efeito visual rápido
-                setTimeout(() => btnAtendi.classList.remove('active'), 100);
-            }
+        case ' ': case 'Enter':
+            e.preventDefault(); 
+            if (btnAtendi) { btnAtendi.click(); btnAtendi.classList.add('active'); setTimeout(() => btnAtendi.classList.remove('active'), 100); }
             break;
-
-        case 'p':
-        case 'P':
-        case 'Escape':  // ESC
-            if (btnPular) {
-                btnPular.click();
-                btnPular.classList.add('active');
-                setTimeout(() => btnPular.classList.remove('active'), 100);
-            }
+        case 'p': case 'P': case 'Escape':
+            if (btnPular) { btnPular.click(); btnPular.classList.add('active'); setTimeout(() => btnPular.classList.remove('active'), 100); }
             break;
-            
-        case 'F1':      // F1 (Ajuda)
+        case 'F1':
             e.preventDefault();
-            if (mascoteImg) mascoteImg.click(); // Abre a ajuda da Elyse
+            if (mascoteImg) {
+                const modalAjuda = document.getElementById('modal-ajuda');
+                if (modalAjuda) { modalAjuda.style.display = 'flex'; falar("Aqui está o manual! 🤓"); }
+            }
             break;
     }
 });

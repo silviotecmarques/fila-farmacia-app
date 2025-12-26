@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SISTEMA ELYSE (v1.0.6) — Farmácia Maxi Popular</title>
+  
+  <title>SISTEMA ELYSE</title>
 
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="style/main.css" />
-  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;600;800&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style/ghibli-theme.css" />
 </head>
 <body>
 
@@ -16,7 +17,7 @@
 
     <div id="atual-layout">
       <div id="atual-container">
-        <div id="nome-atual">SEM ATENDIMENTOS NO MOMENTO</div>
+        <div id="nome-atual">SEM ATENDIMENTOS</div>
         <img id="foto-atual" src="assets/icons/sem-atendimento.png" alt="Sem atendimento">
       </div>
 
@@ -42,10 +43,10 @@
         <tr>
           <th>Ordem</th>
           <th>Balconista</th>
-          <th>Atendimento</th>
-          <th>Hora</th>
-          <th>Média de Espera</th>
-          <th>Tempo na Fila</th>
+          <th>Atendimentos</th>
+          <th>Última Vez</th>
+          <th>Média Espera</th>
+          <th>Tempo Fila</th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -113,12 +114,12 @@
           <div class="ajuda-item">
               <strong>💡 Como usar o sistema:</strong>
               <ul>
-                  <li><span style="color:#4f8d4f"><b>ATENDI:</b></span> Chama o próximo da fila e registra o atendimento.</li>
-                  <li><span style="color:#d35400"><b>PASSAR:</b></span> Joga o balconista atual para o fim da fila (caso precise sair rapidinho).</li>
-                  <li><span style="color:#2c3e50"><b>FILA:</b></span> Abre a tela de gestão para adicionar ou remover balconistas.</li>
+                  <li><span style="color:#4f8d4f"><b>ATENDI (Espaço):</b></span> Chama o próximo da fila.</li>
+                  <li><span style="color:#d35400"><b>PASSAR (Esc):</b></span> Joga o balconista para o fim da fila.</li>
+                  <li><span style="color:#2c3e50"><b>FILA:</b></span> Gerencia quem está trabalhando.</li>
               </ul>
           </div>
-          <div class="ajuda-footer" style="justify-content: center;">
+          <div class="ajuda-footer" style="justify-content: center; display: flex;">
               <button id="btn-fechar-ajuda">ENTENDI</button>
           </div>
       </div>
@@ -135,6 +136,7 @@
     </div>
   </div>
 
+  <script src="renderer/falas.js"></script> 
   <script src="renderer/app.js"></script>
 </body>
 </html>
