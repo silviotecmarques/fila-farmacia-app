@@ -1,272 +1,28 @@
-// renderer/app.js
+// SISTEMA ELYSE - VERSÃO 4.0 (PASTA BOT + LOGICA PERSONALIZADA)
 
-const DEFAULT_BALCONISTAS = [
-  { nome: "Wendeel", id: "wendeel" },
-  { nome: "Drª Josyanne", id: "dra-josyanne" },
-  { nome: "Drª Leiliane", id: "dra-leiliane" },
-  { nome: "Drª Renata", id: "dra-renata" },
-  { nome: "Franciete", id: "franciete" },
-  { nome: "Eriane", id: "eriane" },
-  { nome: "Taynan", id: "taynan" },
-  { nome: "Taina", id: "taina" }
-];
+const DEFAULT_BALCONISTAS = []; 
 
+// OPÇÕES PRONTAS DE AVATARES
 const GALLERY_OPTIONS = [
-    { name: "Pato", path: "assets/fotos/galeria/duck.png" }, 
-    { name: "Raposa", path: "assets/fotos/galeria/fox.png" },
-    { name: "Panda", path: "assets/fotos/galeria/panda-bear.png" }, 
-    { name: "Coelho", path: "assets/fotos/galeria/rabbit.png" },
-    { name: "Bicho Preguiça", path: "assets/fotos/galeria/sloth.png" },
-    { name: "Tigre", path: "assets/fotos/galeria/tiger.png" }
+    { name: "Avatar 1", url: "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Felix" }, 
+    { name: "Avatar 2", url: "https://api.dicebear.com/9.x/thumbs/svg?seed=Felix" },
+    { name: "Avatar 3", url: "https://api.dicebear.com/9.x/bottts/svg?seed=Felix" }, 
+    { name: "Avatar 4", url: "https://api.dicebear.com/9.x/bottts-neutral/svg" },
+    { name: "Avatar 5", url: "https://api.dicebear.com/9.x/dylan/svg?seed=Felix" },
+    { name: "Avatar 6", url: "https://api.dicebear.com/9.x/notionists-neutral/svg" }
 ];
 
+const AVATAR_STYLES = [ "fun-emoji", "thumbs", "bottts", "bottts-neutral", "dylan", "notionists-neutral" ];
+
+// VARIÁVEIS GLOBAIS
 let balconistas = []; 
 let fila = [];
-let tempoFila = {};
-let tempoRelogio = {};
-let atendimentos = {};
-let horasUltimoAtendimento = {};
-let tempoTotalEspera = {};
+let tempoFila = {}, tempoRelogio = {}, atendimentos = {}, horasUltimoAtendimento = {}, tempoTotalEspera = {};
 let cronometroInterval = null;
-
 let isDeletionMode = false; 
 let selectedForDeletion = []; 
 
-// --- SISTEMA DE MASCOTE ELYSE ---
-const mascoteImg = document.getElementById('mascote-img');
-const mascoteBalao = document.getElementById('mascote-balao');
-
-const GIFS = {
-    idle: 'assets/mascote-idle.gif',
-    sucesso: 'assets/mascote-sucesso.gif',
-    pc: 'assets/mascote-pc.gif',
-    duvida: 'assets/mascote-duvida.gif'
-};
-
-function preloadImages() {
-    for (const key in GIFS) {
-        const img = new Image();
-        img.src = GIFS[key];
-    }
-}
-preloadImages();
-
-let estadoAtual = 'idle';
-let timeoutSucesso = null;
-
-function setMascote(estado) {
-    if (estadoAtual === estado) return;
-    if (mascoteImg) {
-        mascoteImg.src = GIFS[estado];
-        estadoAtual = estado;
-    }
-}
-
-function verificarEstadoFila() {
-    if (timeoutSucesso) return; 
-    const modalAjuda = document.getElementById('modal-ajuda');
-    if (modalAjuda && modalAjuda.style.display === 'flex') return;
-
-    if (fila.length === 0) {
-        setMascote('pc'); 
-    } else {
-        setMascote('idle'); 
-    }
-}
-
-// ARRASTAR E SOLTAR
-const savedPos = localStorage.getItem('mascotePosicao');
-if (savedPos) {
-    const pos = JSON.parse(savedPos);
-    const container = document.getElementById('mascote-container');
-    if (container) {
-        container.style.left = pos.x + 'px';
-        container.style.top = pos.y + 'px';
-        container.style.bottom = 'auto';
-        container.style.right = 'auto';
-    }
-}
-
-if (mascoteImg) {
-    const container = document.getElementById('mascote-container');
-    let isDragging = false;
-    let startX, startY, initialLeft, initialTop;
-    let didMove = false;
-
-    container.onmousedown = (e) => {
-        isDragging = true;
-        didMove = false;
-        startX = e.clientX;
-        startY = e.clientY;
-        const rect = container.getBoundingClientRect();
-        initialLeft = rect.left;
-        initialTop = rect.top;
-        container.style.cursor = 'grabbing';
-    };
-
-    window.onmousemove = (e) => {
-        if (!isDragging) return;
-        const dx = e.clientX - startX;
-        const dy = e.clientY - startY;
-        if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
-            didMove = true;
-            container.style.left = `${initialLeft + dx}px`;
-            container.style.top = `${initialTop + dy}px`;
-            container.style.bottom = 'auto';
-        }
-    };
-
-    window.onmouseup = () => {
-        if (!isDragging) return;
-        isDragging = false;
-        container.style.cursor = 'grab';
-
-        if (didMove) {
-            const rect = container.getBoundingClientRect();
-            localStorage.setItem('mascotePosicao', JSON.stringify({ x: rect.left, y: rect.top }));
-        } else {
-            const modalAjuda = document.getElementById('modal-ajuda');
-            if (modalAjuda) {
-                modalAjuda.style.display = 'flex';
-                falar("Aqui está o manual! 🤓");
-            }
-        }
-    };
-
-    mascoteImg.onmouseenter = () => {
-        if (!isDragging && !timeoutSucesso) {
-            setMascote('duvida');
-            falar("Precisa de ajuda? Clique ou me arraste! 🧐");
-        }
-    };
-    mascoteImg.onmouseleave = () => {
-        if (!isDragging) verificarEstadoFila();
-    };
-}
-
-const btnFecharAjuda = document.getElementById('btn-fechar-ajuda');
-const modalAjuda = document.getElementById('modal-ajuda');
-if (btnFecharAjuda && modalAjuda) {
-    btnFecharAjuda.onclick = () => {
-        modalAjuda.style.display = 'none';
-        verificarEstadoFila();
-    };
-    modalAjuda.onclick = (e) => {
-        if (e.target === modalAjuda) {
-            modalAjuda.style.display = 'none';
-            verificarEstadoFila();
-        }
-    };
-}
-
-// FALAS E BUBBLES
-let balaoTimeout = null;
-
-function falar(texto) {
-    if (!mascoteBalao) return;
-    if (balaoTimeout) clearTimeout(balaoTimeout);
-    
-    mascoteBalao.textContent = texto;
-    mascoteBalao.classList.add('visible');
-    
-    balaoTimeout = setTimeout(() => {
-        mascoteBalao.classList.remove('visible');
-        balaoTimeout = null;
-    }, 4000);
-}
-
-// LOOP DE FALAS INTELIGENTE
-setInterval(() => {
-    // Carrega o banco de falas ou usa backup
-    const bancoFalas = window.FALAS_ELYSE || { 
-        aleatorias: ["Olá!"], filaVazia: ["..."], filaCheia: ["!"], 
-        bomDia: ["Bom dia!"], boaTarde: ["Boa tarde!"], boaNoite: ["Boa noite!"] 
-    };
-
-    // A cada 20 segundos, tem 50% de chance de falar
-    if (Math.random() > 0.5) { 
-        let fraseEscolhida = "";
-        const hora = new Date().getHours(); // Pega a hora atual (0 a 23)
-        
-        // 1. Prioridade: Tamanho da Fila
-        if (fila.length === 0) {
-            // Fila Vazia
-            const lista = bancoFalas.filaVazia;
-            fraseEscolhida = lista[Math.floor(Math.random() * lista.length)];
-        } else if (fila.length > 5) {
-            // Fila Cheia
-            const lista = bancoFalas.filaCheia;
-            fraseEscolhida = lista[Math.floor(Math.random() * lista.length)];
-        } else {
-            // 2. Situação Normal (Fila entre 1 e 5 pessoas)
-            // Tem 20% de chance de dar uma saudação de horário
-            
-            const chanceSaudacao = Math.random() > 0.8; // 20% de chance
-
-            if (hora < 12 && chanceSaudacao) {
-                // MANHÃ (Até 11:59)
-                const lista = bancoFalas.bomDia;
-                fraseEscolhida = lista[Math.floor(Math.random() * lista.length)];
-
-            } else if (hora >= 12 && hora < 18 && chanceSaudacao) {
-                // TARDE (12:00 até 17:59)
-                const lista = bancoFalas.boaTarde || ["Boa tarde, equipe!"];
-                fraseEscolhida = lista[Math.floor(Math.random() * lista.length)];
-
-            } else if (hora >= 18 && chanceSaudacao) {
-                // NOITE (18:00 em diante)
-                const lista = bancoFalas.boaNoite;
-                fraseEscolhida = lista[Math.floor(Math.random() * lista.length)];
-
-            } else {
-                // FRASES DE TRABALHO (Aleatórias Gerais)
-                const lista = bancoFalas.aleatorias;
-                fraseEscolhida = lista[Math.floor(Math.random() * lista.length)];
-            }
-        }
-        falar(fraseEscolhida);
-    }
-}, 20000); 
-
-// --- LÓGICA DA FILA ---
-function todayKey() { return new Date().toDateString(); }
-
-function saveState() {
-    try {
-        localStorage.setItem('balconistas', JSON.stringify(balconistas));
-        localStorage.setItem('fila', JSON.stringify(fila));
-        localStorage.setItem('tempoFila', JSON.stringify(tempoFila));
-        localStorage.setItem('atendimentos', JSON.stringify(atendimentos));
-        localStorage.setItem('tempoTotalEspera', JSON.stringify(tempoTotalEspera));
-        localStorage.setItem('horasUltimoAtendimento', JSON.stringify(horasUltimoAtendimento));
-        localStorage.setItem('lastSavedDate', todayKey()); 
-    } catch(e) { console.error(e); }
-}
-
-function loadState() {
-    try {
-        const storedBalconistas = localStorage.getItem('balconistas');
-        balconistas = storedBalconistas ? JSON.parse(storedBalconistas) : DEFAULT_BALCONISTAS;
-        
-        fila = [];
-        tempoFila = {};
-        tempoRelogio = {}; 
-        atendimentos = {};
-        tempoTotalEspera = {};
-        horasUltimoAtendimento = {};
-
-        localStorage.removeItem('fila');
-        localStorage.removeItem('tempoFila');
-        localStorage.removeItem('atendimentos');
-        localStorage.removeItem('tempoTotalEspera');
-        localStorage.removeItem('horasUltimoAtendimento');
-    } catch(e) {
-        balconistas = DEFAULT_BALCONISTAS;
-    }
-}
-
-loadState();
-
+// ELEMENTOS DOM
 const nomeAtual = document.getElementById("nome-atual");
 const fotoAtual = document.getElementById("foto-atual");
 const btnAtendi = document.getElementById("btn-atendi");
@@ -278,407 +34,371 @@ const btnOk = document.getElementById("btn-ok");
 const btnAdicionarBalconista = document.getElementById("btn-adicionar-balconista"); 
 const btnToggleDeletion = document.getElementById("btn-toggle-deletion"); 
 const modalOverlay = document.getElementById('modal-overlay');
+
 const modalNomeInput = document.getElementById('modal-nome');
-const modalImageFileInput = document.getElementById('modal-image-file');
-const btnSelecionarImagemModal = document.getElementById('btn-selecionar-imagem-modal');
+const modalNascInput = document.getElementById('modal-nasc');
+const modalSexoInput = document.getElementById('modal-sexo');
+const modalCelInput = document.getElementById('modal-cel');
 const btnSalvarModal = document.getElementById('btn-salvar-modal');
 const btnCancelarModal = document.getElementById('btn-cancelar-modal');
 const modalImagePreview = document.getElementById('modal-image-preview');
-const modalStatus = document.getElementById('modal-status');
 const modalForm = document.getElementById('modal-add-form');
 const imageGallery = document.getElementById('image-gallery'); 
-let selectedImageBase64 = null;
+const btnRefreshAvatars = document.getElementById('btn-refresh-avatars');
 
-function slugify(text) {
-  return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^\w\s-]/g, '').trim().replace(/[-\s]+/g, '-');
+let selectedAvatarUrl = null;
+
+// --- CONFIGURAÇÃO DA MASCOTE (PASTA ASSETS/BOT) ---
+const mascoteImg = document.getElementById('mascote-img');
+const mascoteBalao = document.getElementById('mascote-balao');
+
+// MAPEAMENTO DOS ARQUIVOS NA PASTA assets/bot
+const GIFS = {
+    duvida:  'assets/bot/mascote-duvida.gif',  // Mouse em cima
+    idle:    'assets/bot/mascote-idle.gif',    // Tem atendimento (Em pé)
+    pc:      'assets/bot/mascote-pc.gif',      // Fila vazia (No PC)
+    sucesso: 'assets/bot/mascote-sucesso.gif'  // Botão Atendi (Comemorando)
+};
+
+function preloadImages() { for (const key in GIFS) { const img = new Image(); img.src = GIFS[key]; } }
+preloadImages();
+
+let estadoAtual = 'idle';
+let timeoutSucesso = null;
+
+function setMascote(estado) {
+    if (estadoAtual === estado) return;
+    if (mascoteImg) { 
+        mascoteImg.src = GIFS[estado]; 
+        estadoAtual = estado; 
+    }
 }
 
-function getBase64FromPath(path, callback) {
-    const img = new Image();
-    img.onload = function () {
-        const canvas = document.createElement('canvas');
-        canvas.width = img.naturalWidth;
-        canvas.height = img.naturalHeight;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0);
-        const dataUrl = canvas.toDataURL('image/png'); 
-        callback(dataUrl.split(',')[1]);
+function verificarEstadoFila() {
+    if (timeoutSucesso) return; // Se estiver comemorando, não muda
+    if (document.getElementById('modal-ajuda').style.display === 'flex') return;
+
+    // LÓGICA PEDIDA:
+    if (fila.length === 0) {
+        // Ninguém na fila -> Mascote no PC (Trabalhando/Esperando)
+        setMascote('pc'); 
+    } else {
+        // Tem gente na fila (Atendimento) -> Mascote Idle (Em pé observando)
+        setMascote('idle'); 
+    }
+}
+
+// ARRASTAR MASCOTE + EVENTO DE MOUSE
+if (mascoteImg) {
+    const container = document.getElementById('mascote-container');
+    const savedPos = localStorage.getItem('mascotePosicao');
+    if (savedPos && container) {
+        const pos = JSON.parse(savedPos);
+        container.style.left = pos.x + 'px'; container.style.top = pos.y + 'px'; container.style.bottom = 'auto';
+    }
+    let isDragging = false, startX, startY, initialLeft, initialTop, didMove = false;
+    
+    container.onmousedown = (e) => {
+        isDragging = true; didMove = false; startX = e.clientX; startY = e.clientY;
+        const rect = container.getBoundingClientRect(); initialLeft = rect.left; initialTop = rect.top;
+        container.style.cursor = 'grabbing';
     };
-    img.onerror = function() { callback(null); };
-    img.src = path;
+    window.onmousemove = (e) => {
+        if (!isDragging) return;
+        const dx = e.clientX - startX; const dy = e.clientY - startY;
+        if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+            didMove = true; container.style.left = `${initialLeft + dx}px`; container.style.top = `${initialTop + dy}px`; container.style.bottom = 'auto';
+        }
+    };
+    window.onmouseup = () => {
+        if (!isDragging) return;
+        isDragging = false; container.style.cursor = 'grab';
+        if (didMove) localStorage.setItem('mascotePosicao', JSON.stringify({ x: container.getBoundingClientRect().left, y: container.getBoundingClientRect().top }));
+        else { document.getElementById('modal-ajuda').style.display = 'flex'; falar("Aqui está o manual! 🤓"); }
+    };
+
+    // EVENTO: Passar o mouse -> Fica com Dúvida
+    mascoteImg.onmouseenter = () => {
+        if (!isDragging && !timeoutSucesso) {
+            setMascote('duvida');
+            falar("Precisa de alguma coisa?");
+        }
+    };
+
+    // EVENTO: Tirar o mouse -> Volta ao estado normal da fila (PC ou Idle)
+    mascoteImg.onmouseleave = () => {
+        if (!isDragging) verificarEstadoFila();
+    };
 }
 
-function renderImageGallery() {
+document.getElementById('btn-fechar-ajuda').onclick = () => { document.getElementById('modal-ajuda').style.display = 'none'; verificarEstadoFila(); };
+
+// FALAS DA ELYSE
+let balaoTimeout = null;
+function falar(texto) {
+    if (!mascoteBalao) return;
+    if (balaoTimeout) clearTimeout(balaoTimeout);
+    mascoteBalao.textContent = texto; mascoteBalao.classList.add('visible');
+    balaoTimeout = setTimeout(() => { mascoteBalao.classList.remove('visible'); balaoTimeout = null; }, 4000);
+}
+
+// LOOP COACH (Falas aleatórias)
+setInterval(() => {
+    const bancoFalas = window.FALAS_ELYSE || { aleatorias: ["Olá!"] };
+    if (Math.random() > 0.5) { 
+        let frase = ""; const hora = new Date().getHours(); const chance = Math.random() > 0.8;
+        if (fila.length === 0) frase = bancoFalas.filaVazia[Math.floor(Math.random() * bancoFalas.filaVazia.length)];
+        else if (fila.length > 5) frase = bancoFalas.filaCheia[Math.floor(Math.random() * bancoFalas.filaCheia.length)];
+        else if (hora < 12 && chance) frase = bancoFalas.bomDia[Math.floor(Math.random() * bancoFalas.bomDia.length)];
+        else if (hora >= 18 && chance) frase = bancoFalas.boaNoite[Math.floor(Math.random() * bancoFalas.boaNoite.length)];
+        else frase = bancoFalas.aleatorias[Math.floor(Math.random() * bancoFalas.aleatorias.length)];
+        falar(frase);
+    }
+}, 20000);
+
+// MÁSCARA CELULAR
+modalCelInput.addEventListener('input', function (e) {
+    let value = e.target.value;
+    value = value.replace(/\D/g, "");
+    if (value.length > 11) value = value.slice(0, 11);
+    if (value.length > 2) value = `(${value.slice(0, 2)}) ${value.slice(2)}`;
+    if (value.length > 10) value = `${value.slice(0, 10)}-${value.slice(10)}`;
+    e.target.value = value;
+});
+
+// UTILITÁRIOS
+function getAvatarUrlInicial(nome) {
+    return `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(nome)}&backgroundColor=4f8d4f&textColor=ffffff&fontWeight=700`;
+}
+
+// SAVE / LOAD
+function saveState() {
+    localStorage.setItem('balconistas', JSON.stringify(balconistas));
+    localStorage.setItem('fila', JSON.stringify(fila));
+    localStorage.setItem('tempoFila', JSON.stringify(tempoFila));
+    localStorage.setItem('atendimentos', JSON.stringify(atendimentos));
+    localStorage.setItem('tempoTotalEspera', JSON.stringify(tempoTotalEspera));
+}
+
+function loadState() {
+    try {
+        const stored = localStorage.getItem('balconistas');
+        balconistas = stored ? JSON.parse(stored) : DEFAULT_BALCONISTAS;
+        fila = []; tempoFila = {}; tempoRelogio = {}; atendimentos = {}; tempoTotalEspera = {};
+    } catch(e) { balconistas = []; }
+}
+loadState();
+
+// GERADOR AVATARES
+function gerarGaleriaAleatoria() {
     imageGallery.innerHTML = '';
-    GALLERY_OPTIONS.forEach((option) => {
-        const div = document.createElement('div');
-        div.classList.add('gallery-option');
-        const img = document.createElement('img');
-        img.src = option.path;
-        div.appendChild(img);
+    AVATAR_STYLES.forEach((style, index) => {
+        const randomSeed = Math.random().toString(36).substring(7);
+        const url = `https://api.dicebear.com/9.x/${style}/svg?seed=${randomSeed}`;
+        
+        const div = document.createElement('div'); div.classList.add('gallery-option');
+        const img = document.createElement('img'); img.src = url; div.appendChild(img);
+        
         div.onclick = () => {
-            document.querySelectorAll('.gallery-option').forEach(el => el.classList.remove('selected'));
+            document.querySelectorAll('.gallery-option').forEach(el => el.classList.remove('selected')); 
             div.classList.add('selected');
-            modalImageFileInput.value = '';
-            modalStatus.textContent = 'Carregando...';
-            getBase64FromPath(option.path, (base64) => {
-                selectedImageBase64 = base64;
-                modalImagePreview.innerHTML = `<img src="data:image/png;base64,${base64}" alt="Preview">`;
-                modalStatus.textContent = 'Selecionada.';
-                updateModalSaveButton();
-            });
+            selectedAvatarUrl = url;
+            modalImagePreview.innerHTML = `<img src="${selectedAvatarUrl}" alt="Preview">`;
         };
         imageGallery.appendChild(div);
     });
 }
 
+btnRefreshAvatars.onclick = () => {
+    btnRefreshAvatars.innerHTML = "⏳ Carregando...";
+    setTimeout(() => { btnRefreshAvatars.innerHTML = "🔄 Novas Opções"; }, 500);
+    gerarGaleriaAleatoria();
+    selectedAvatarUrl = null; 
+    atualizarPreviewAvatarAutomatico();
+};
+
+// MODAL
 function openAddModal() {
-    modalOverlay.style.display = 'flex';
-    renderImageGallery();
-    modalForm.reset();
-    selectedImageBase64 = null;
-    btnSalvarModal.disabled = true;
-    modalStatus.textContent = '';
-    modalImagePreview.innerHTML = `<span style="color: #8b8680;">Nenhuma Imagem</span>`;
-    document.querySelectorAll('.gallery-option').forEach(el => el.classList.remove('selected'));
-    modalNomeInput.focus();
+    modalOverlay.style.display = 'flex'; modalForm.reset(); selectedAvatarUrl = null; 
+    gerarGaleriaAleatoria();
+    atualizarPreviewAvatarAutomatico(); modalNomeInput.focus();
 }
 
+function atualizarPreviewAvatarAutomatico() {
+    const nome = modalNomeInput.value.trim();
+    if (!selectedAvatarUrl) {
+        if (nome.length > 0) modalImagePreview.innerHTML = `<img src="${getAvatarUrlInicial(nome)}" alt="Avatar">`;
+        else modalImagePreview.innerHTML = `<span style="color:#8b8680; font-size:12px;">Digite o nome...</span>`;
+    }
+}
+modalNomeInput.oninput = atualizarPreviewAvatarAutomatico;
 function closeAddModal() { modalOverlay.style.display = 'none'; }
 
-function handleImageSelect(file) {
-    if (!file || !file.type.startsWith('image/')) return;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        selectedImageBase64 = e.target.result.split(',')[1];
-        modalImagePreview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
-        updateModalSaveButton();
+// SALVAR
+modalForm.onsubmit = (e) => {
+    e.preventDefault(); const nome = modalNomeInput.value.trim(); if (nome.length === 0) return;
+    const idUnico = Date.now().toString(); 
+    const imagemFinal = selectedAvatarUrl ? selectedAvatarUrl : getAvatarUrlInicial(nome);
+    const novoBalconista = {
+        id: idUnico, nome: nome, nascimento: modalNascInput.value, sexo: modalSexoInput.value, celular: modalCelInput.value, avatarUrl: imagemFinal, base64: null 
     };
-    reader.readAsDataURL(file);
-}
-
-function saveNewBalconista(nome, id, base64Image) {
     btnSalvarModal.classList.add('loading');
-    btnSalvarModal.disabled = true;
     setTimeout(() => {
-        balconistas.push({ nome: nome, id: id, base64: base64Image });
-        saveState(); 
-        btnSalvarModal.classList.remove('loading');
-        closeAddModal();
-        montarTela2();
-        atualizarTela1();
-    }, 1500);
-}
-
-function updateModalSaveButton() {
-    btnSalvarModal.disabled = !(modalNomeInput.value.trim().length > 0 && selectedImageBase64);
-}
-
-btnAdicionarBalconista.onclick = openAddModal; 
-btnSelecionarImagemModal.onclick = () => { modalImageFileInput.click(); };
-modalImagePreview.onclick = () => { modalImageFileInput.click(); };
-modalImageFileInput.onchange = (e) => { if (e.target.files.length > 0) handleImageSelect(e.target.files[0]); };
-modalNomeInput.oninput = updateModalSaveButton;
+        balconistas.push(novoBalconista); saveState();
+        btnSalvarModal.classList.remove('loading'); closeAddModal(); montarTela2(); falar("Cadastro realizado! 🎉");
+    }, 1000);
+};
+btnAdicionarBalconista.onclick = openAddModal;
 btnCancelarModal.onclick = closeAddModal;
 
-modalForm.onsubmit = (e) => {
-    e.preventDefault();
-    if (btnSalvarModal.disabled) return;
-    const nome = modalNomeInput.value.trim();
-    const id = slugify(nome);
-    if (balconistas.some(b => b.id === id)) return;
-    saveNewBalconista(nome, id, selectedImageBase64);
-};
-
+// --- TELA FILA (FOTO CENTRAL) ---
 function atualizarTela1() {
   if (fila.length > 0) {
-    const atual = fila[0];
+    const atual = fila[0]; 
     nomeAtual.textContent = atual.nome;
-    setTimeout(() => {
-      if (atual.base64) {
-          fotoAtual.src = `data:image/png;base64,${atual.base64}`;
-      } else {
-          fotoAtual.src = `assets/fotos/${atual.id}-colorida.png?v=${Date.now()}`;
-      }
-    }, 50);
+    fotoAtual.src = atual.avatarUrl || getAvatarUrlInicial(atual.nome);
   } else {
-    nomeAtual.textContent = "SEM ATENDIMENTOS";
-    fotoAtual.src = "assets/icons/sem-atendimento.png";
+    // FILA VAZIA NO CENTRO DA TELA
+    // Usamos a Mascote-Idle (Em pé) como "Logo" de espera no centro
+    nomeAtual.textContent = "SEM ATENDIMENTOS"; 
+    fotoAtual.src = "assets/bot/mascote-idle.gif"; 
   }
-  atualizarTabelaFila();
-  atualizarCardsFila();
-  iniciarCronometro();
-  verificarEstadoFila();
+  atualizarTabelaFila(); atualizarCardsFila(); iniciarCronometro(); verificarEstadoFila();
 }
 
-btnAtendi.onclick = () => {
-  if (!fila.length) return;
-  const atendido = fila.shift();
-  fila.push(atendido);
-  atendimentos[atendido.id] = (atendimentos[atendido.id] || 0) + 1;
-  const agora = new Date();
-  horasUltimoAtendimento[atendido.id] = agora.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
-  const esperaAtual = tempoRelogio[atendido.id] || 0;
-  tempoTotalEspera[atendido.id] = (tempoTotalEspera[atendido.id] || 0) + esperaAtual;
-  tempoRelogio[atendido.id] = 0;
-  
-  setMascote('sucesso');
-  falar("Atendimento realizado! 👍");
-  
-  if (timeoutSucesso) clearTimeout(timeoutSucesso);
-  timeoutSucesso = setTimeout(() => {
-      timeoutSucesso = null;
-      verificarEstadoFila();
-  }, 3000);
-
-  atualizarTela1();
-  saveState();
-};
-
-if (btnPular) {
-    btnPular.onclick = () => {
-      if (!fila.length) return;
-      const pulou = fila.shift();
-      fila.push(pulou);
-      tempoRelogio[pulou.id] = 0;
-      atualizarTela1();
-      saveState();
-      falar("Passando a vez... 🔄");
-    };
-}
-
-btnGestao.onclick = () => {
-  telaFila.style.display = "none";
-  telaGestao.style.display = "block";
-  montarTela2();
-};
-
-btnOk.onclick = () => {
-  if (isDeletionMode) {
-      toggleDeletionMode();
-  } else {
-      telaGestao.style.display = "none";
-      telaFila.style.display = "block";
-      atualizarTela1();
-      saveState(); 
-  }
-};
-
-function toggleDeletionMode() {
-    isDeletionMode = !isDeletionMode;
-    selectedForDeletion = [];
-    if (isDeletionMode) {
-        btnToggleDeletion.innerHTML = '<img src="assets/icons/lixeira.png" class="icon-btn" /> EXCLUIR'; 
-        btnToggleDeletion.classList.add('active-mode'); 
-        btnToggleDeletion.classList.remove('ready-to-confirm'); 
-        btnAdicionarBalconista.disabled = true; 
-        
-        btnOk.innerHTML = '<img src="assets/icons/voltar.png" class="icon-btn" /> CANCELAR'; 
-        btnOk.classList.add('cancel-yellow'); 
-    } else {
-        btnToggleDeletion.innerHTML = '<img src="assets/icons/lixeira.png" class="icon-btn" /> EXCLUIR'; 
-        btnToggleDeletion.classList.remove('active-mode');
-        btnToggleDeletion.classList.remove('ready-to-confirm');
-        btnAdicionarBalconista.disabled = false;
-        
-        btnOk.innerHTML = '<img src="assets/icons/voltar.png" class="icon-btn" /> VOLTAR';
-        btnOk.classList.remove('cancel-yellow'); 
-    }
-    montarTela2();
-}
-
-btnToggleDeletion.onclick = () => {
-    if (isDeletionMode) {
-        const idsToRemove = selectedForDeletion;
-        if (idsToRemove.length === 0) {
-            toggleDeletionMode();
-            return;
-        }
-        if (!confirm(`Excluir ${idsToRemove.length} balconista(s)?`)) return;
-        
-        idsToRemove.forEach(id => {
-            balconistas = balconistas.filter(p => p.id !== id);
-            fila = fila.filter(p => p.id !== id);
-            delete tempoFila[id];
-            delete tempoRelogio[id];
-            delete atendimentos[id];
-        });
-        toggleDeletionMode(); 
-        saveState();
-        atualizarTela1(); 
-    } else {
-        toggleDeletionMode();
-    }
-};
-
+// --- TELA GESTÃO ---
 function montarTela2() {
-  const container = document.getElementById("balconistas-container");
-  container.innerHTML = "";
+  const container = document.getElementById("balconistas-container"); container.innerHTML = "";
+  if (balconistas.length === 0) { 
+      container.innerHTML = `
+        <div class="empty-state">
+            <img src="assets/bot/mascote-idle.gif" alt="Elyse" style="width:150px;">
+            <h2>NÃO HÁ NINGUÉM CADASTRADO</h2>
+            <p>Clique no botão azul "ADICIONAR NOVO" para começar a equipe.</p>
+        </div>
+      `;
+      btnToggleDeletion.disabled = true; btnToggleDeletion.style.opacity = "0.5"; return; 
+  } else {
+      btnToggleDeletion.disabled = false; btnToggleDeletion.style.opacity = "1";
+  }
   balconistas.forEach(b => {
-    const naFila = fila.find(p => p.id === b.id);
-    const positionIndex = fila.findIndex(p => p.id === b.id);
-    const bloco = document.createElement("div");
-    bloco.classList.add("bloco-foto"); 
-    if (isDeletionMode && selectedForDeletion.includes(b.id)) {
-        bloco.classList.add('selected-for-deletion');
-    }
-    const img = document.createElement("img");
-    if (b.base64) {
-        img.src = `data:image/png;base64,${b.base64}`;
-    } else {
-        img.src = `assets/fotos/${b.id}-colorida.png`;
-    }
-    if (!naFila && !isDeletionMode) { 
-      img.classList.add('balconista-off-queue'); 
-    }
-    const nomeDiv = document.createElement("div");
-    let nomeTexto = b.nome;
-    if (positionIndex >= 0 && !isDeletionMode) { 
-        const ordem = positionIndex + 1; 
-        nomeTexto = `${ordem}º - ${b.nome}`;
-    }
-    nomeDiv.textContent = nomeTexto; 
-    nomeDiv.classList.add('balconista-nome'); 
+    const naFila = fila.find(p => p.id === b.id); const positionIndex = fila.findIndex(p => p.id === b.id);
+    const bloco = document.createElement("div"); bloco.classList.add("bloco-foto"); 
+    if (isDeletionMode && selectedForDeletion.includes(b.id)) bloco.classList.add('selected-for-deletion');
     
+    const img = document.createElement("img");
+    img.src = b.avatarUrl || getAvatarUrlInicial(b.nome);
+    if (!naFila && !isDeletionMode) img.classList.add('balconista-off-queue'); 
+
+    const nomeDiv = document.createElement("div");
+    nomeDiv.textContent = (positionIndex >= 0 && !isDeletionMode) ? `${positionIndex + 1}º - ${b.nome}` : b.nome;
+    nomeDiv.classList.add('balconista-nome'); 
+
     bloco.onclick = () => {
         if (isDeletionMode) {
-            const index = selectedForDeletion.indexOf(b.id);
-            if (index > -1) {
-                selectedForDeletion.splice(index, 1); 
-            } else {
-                selectedForDeletion.push(b.id); 
-            }
-            if (selectedForDeletion.length > 0) {
-                btnToggleDeletion.classList.add('ready-to-confirm');
-                btnToggleDeletion.innerHTML = `<img src="assets/icons/lixeira.png" class="icon-btn" /> EXCLUIR (${selectedForDeletion.length})`;
-            } else {
-                btnToggleDeletion.classList.remove('ready-to-confirm');
-                btnToggleDeletion.innerHTML = '<img src="assets/icons/lixeira.png" class="icon-btn" /> EXCLUIR';
-            }
-            montarTela2(); 
-        } else {
-            if (naFila) {
-                fila = fila.filter(p => p.id !== b.id);
-            } else {
-                fila.push(b);
-            }
+            const idx = selectedForDeletion.indexOf(b.id);
+            if (idx > -1) selectedForDeletion.splice(idx, 1); else selectedForDeletion.push(b.id);
             montarTela2();
-            saveState();
+        } else {
+            if (naFila) fila = fila.filter(p => p.id !== b.id); else fila.push(b);
+            montarTela2(); saveState();
         }
     };
-    bloco.appendChild(img);
-    bloco.appendChild(nomeDiv);
-    container.appendChild(bloco);
+    bloco.appendChild(img); bloco.appendChild(nomeDiv); container.appendChild(bloco);
   });
 }
 
 function atualizarCardsFila() {
-  const container = document.getElementById("cards-fila");
-  if (!container) return;
-  container.innerHTML = "";
+  const container = document.getElementById("cards-fila"); if (!container) return; container.innerHTML = "";
   fila.slice(0, 3).forEach((b, i) => {
-    if (!b || !b.id) return; 
-    const id = b.id;
-    const card = document.createElement("div");
-    card.classList.add("card-fila");
-    const img = document.createElement("img");
-    img.classList.add("card-photo");
-    if (b.base64) {
-        img.src = `data:image/png;base64,${b.base64}`;
-    } else {
-        img.src = `assets/fotos/${id}-colorida.png`;
-    }
-    const title = document.createElement("div");
-    title.classList.add("card-title");
-    title.textContent = `${i + 1}º - ${b.nome}`;
-    card.appendChild(img);
-    card.appendChild(title);
-    container.appendChild(card);
+    const card = document.createElement("div"); card.classList.add("card-fila");
+    const img = document.createElement("img"); img.classList.add("card-photo");
+    img.src = b.avatarUrl || getAvatarUrlInicial(b.nome);
+    const title = document.createElement("div"); title.classList.add("card-title"); title.textContent = `${i + 1}º - ${b.nome}`;
+    card.appendChild(img); card.appendChild(title); container.appendChild(card);
   });
 }
 
+// AÇÕES
+btnAtendi.onclick = () => {
+  if (!fila.length) return;
+  const atendido = fila.shift(); fila.push(atendido);
+  atendimentos[atendido.id] = (atendimentos[atendido.id] || 0) + 1;
+  horasUltimoAtendimento[atendido.id] = new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+  tempoTotalEspera[atendido.id] = (tempoTotalEspera[atendido.id] || 0) + (tempoRelogio[atendido.id] || 0);
+  tempoRelogio[atendido.id] = 0;
+  
+  // AQUI: ELA COMEMORA
+  setMascote('sucesso'); 
+  falar("Atendimento realizado! 👍");
+  
+  if (timeoutSucesso) clearTimeout(timeoutSucesso);
+  timeoutSucesso = setTimeout(() => { timeoutSucesso = null; verificarEstadoFila(); }, 3000);
+  atualizarTela1(); saveState();
+};
+
+btnPular.onclick = () => {
+  if (!fila.length) return;
+  const pulou = fila.shift(); fila.push(pulou); tempoRelogio[pulou.id] = 0;
+  atualizarTela1(); saveState(); falar("Passando a vez... 🔄");
+};
+btnGestao.onclick = () => { telaFila.style.display = "none"; telaGestao.style.display = "block"; montarTela2(); };
+btnOk.onclick = () => {
+  if (isDeletionMode) toggleDeletionMode();
+  else { telaGestao.style.display = "none"; telaFila.style.display = "block"; atualizarTela1(); saveState(); }
+};
+
+function toggleDeletionMode() {
+    isDeletionMode = !isDeletionMode; selectedForDeletion = [];
+    btnToggleDeletion.classList.toggle('active-mode', isDeletionMode);
+    btnAdicionarBalconista.disabled = isDeletionMode;
+    btnToggleDeletion.innerHTML = isDeletionMode ? '<img src="assets/icons/lixeira.png" class="icon-btn" /> CANCELAR EXCLUSÃO' : '<img src="assets/icons/lixeira.png" class="icon-btn" /> EXCLUIR';
+    btnOk.innerHTML = isDeletionMode ? 'CANCELAR' : '<img src="assets/icons/voltar.png" class="icon-btn" /> VOLTAR';
+    montarTela2();
+}
+btnToggleDeletion.onclick = () => {
+    if (isDeletionMode && selectedForDeletion.length > 0) {
+        if (!confirm(`Excluir ${selectedForDeletion.length} balconista(s)?`)) return;
+        balconistas = balconistas.filter(p => !selectedForDeletion.includes(p.id));
+        fila = fila.filter(p => !selectedForDeletion.includes(p.id));
+        toggleDeletionMode(); saveState(); atualizarTela1();
+    } else { toggleDeletionMode(); }
+};
+
 function atualizarTabelaFila() {
-  const tbody = document.querySelector("#tabela-fila tbody");
-  tbody.innerHTML = "";
+  const tbody = document.querySelector("#tabela-fila tbody"); tbody.innerHTML = "";
   fila.forEach((b, i) => {
-    if (!b || !b.id) return; 
-    const id = b.id;
-    const qtd = atendimentos[id] || 0;
-    const total = tempoFila[id] || 0;
-    const media = qtd > 0 ? Math.floor((tempoTotalEspera[id] || 0) / qtd) : 0;
-    const hora = horasUltimoAtendimento[id] || "--:--";
-    const relogio = i === 0 ? ` <small>(${formatarTempo(tempoRelogio[id] || 0)})</small>` : "";
+    const qtd = atendimentos[b.id] || 0;
+    const media = qtd > 0 ? Math.floor((tempoTotalEspera[b.id] || 0) / qtd) : 0;
+    const relogio = i === 0 ? ` <small>(${formatarTempo(tempoRelogio[b.id] || 0)})</small>` : "";
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${i + 1}º</td><td>${b.nome}${relogio}</td><td>${qtd}</td><td>${hora}</td><td>${formatarTempo(media)}</td><td>${formatarTempo(total)}</td>`;
+    tr.innerHTML = `<td>${i + 1}º</td><td>${b.nome}${relogio}</td><td>${qtd}</td><td>${horasUltimoAtendimento[b.id] || "--:--"}</td><td>${formatarTempo(media)}</td><td>${formatarTempo(tempoFila[b.id] || 0)}</td>`;
     tbody.appendChild(tr);
   });
 }
-
 function iniciarCronometro() {
   if (cronometroInterval) clearInterval(cronometroInterval);
   cronometroInterval = setInterval(() => {
-    fila.forEach((b, i) => {
-      if (!b || !b.id) return; 
-      const id = b.id;
-      tempoFila[id] = (tempoFila[id] || 0) + 1;
-      if (i === 0) tempoRelogio[id] = (tempoRelogio[id] || 0) + 1;
-    });
-    atualizarTabelaFila();
-    atualizarCardsFila();
-    saveState();
+    fila.forEach((b, i) => { tempoFila[b.id] = (tempoFila[b.id] || 0) + 1; if (i === 0) tempoRelogio[b.id] = (tempoRelogio[b.id] || 0) + 1; });
+    atualizarTabelaFila(); atualizarCardsFila(); saveState();
   }, 1000);
 }
-
 function formatarTempo(seg) {
-  const h = Math.floor(seg / 3600);
-  const m = Math.floor((seg % 3600) / 60);
-  const s = seg % 60;
-  const mm = String(m).padStart(2, "0");
-  const ss = String(s).padStart(2, "0");
-  if (h > 0) return `${h}:${mm}`; 
-  return `${m}:${ss}`;            
+  const h = Math.floor(seg / 3600); const m = Math.floor((seg % 3600) / 60); const s = seg % 60;
+  return h > 0 ? `${h}:${String(m).padStart(2, "0")}` : `${m}:${String(s).padStart(2, "0")}`;
 }
-
-atualizarTela1();
 
 async function atualizarLetreiro() {
-    const letreiro = document.querySelector('.ticker-content');
-    if (!letreiro) return;
     try {
-        const avisosFixos = "🚀 <b>BOM TRABALHO EQUIPE!</b> — 💊 CONFIRA A VALIDADE DOS LOTES";
-        const textoNoticias = await window.api.buscarNoticias();
-        letreiro.innerHTML = `${avisosFixos} — 🌍 <b>NOTÍCIAS AGORA:</b> ${textoNoticias}`;
-    } catch (error) { console.error(error); }
+        const noticias = await window.api.buscarNoticias();
+        const div = document.querySelector('.ticker-content');
+        if(div) div.innerHTML = `🚀 <b>FARMÁCIA MAXI POPULAR</b> — ${noticias}`;
+    } catch(e) {}
 }
-
-atualizarLetreiro();
-setInterval(atualizarLetreiro, 600000); 
+atualizarLetreiro(); setInterval(atualizarLetreiro, 600000);
 
 document.addEventListener('keydown', (e) => {
     if (e.target.tagName === 'INPUT') return;
-    const modalAdd = document.getElementById('modal-overlay');
-    const modalHelp = document.getElementById('modal-ajuda');
-    if ((modalAdd && modalAdd.style.display === 'flex') || (modalHelp && modalHelp.style.display === 'flex')) {
-        if (e.key === 'Escape') {
-            if (modalAdd.style.display === 'flex') closeAddModal();
-            if (modalHelp.style.display === 'flex') { modalHelp.style.display = 'none'; verificarEstadoFila(); }
-        }
-        return;
-    }
-    switch(e.key) {
-        case ' ': case 'Enter':
-            e.preventDefault(); 
-            if (btnAtendi) { btnAtendi.click(); btnAtendi.classList.add('active'); setTimeout(() => btnAtendi.classList.remove('active'), 100); }
-            break;
-        case 'p': case 'P': case 'Escape':
-            if (btnPular) { btnPular.click(); btnPular.classList.add('active'); setTimeout(() => btnPular.classList.remove('active'), 100); }
-            break;
-        case 'F1':
-            e.preventDefault();
-            if (mascoteImg) {
-                const modalAjuda = document.getElementById('modal-ajuda');
-                if (modalAjuda) { modalAjuda.style.display = 'flex'; falar("Aqui está o manual! 🤓"); }
-            }
-            break;
-    }
+    if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); btnAtendi.click(); }
+    if (e.key === 'p' || e.key === 'P' || e.key === 'Escape') { btnPular.click(); }
 });
