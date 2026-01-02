@@ -1,37 +1,148 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciador de Fila</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SISTEMA ELYSE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style/main.css" />
 </head>
 <body>
 
-    <div class="app-container">
-        
-        <div id="tela-fila" class="tela ativa">
-            <h1>Fila de Espera</h1>
-            <div id="lista-usuarios" class="lista-container">
-                </div>
-        </div>
+  <div id="tela-fila">
+    <h1>ATENDIMENTO ATUAL</h1>
 
-        <div id="tela-detalhes" class="tela hidden">
-            <div class="detalhes-header">
-                <button id="btn-voltar" class="btn-voltar">⬅ Voltar para Fila</button>
-            </div>
+    <div id="atual-layout">
+      <div id="atual-container">
+        <div id="nome-atual">SEM ATENDIMENTOS</div>
+        <img id="foto-atual" src="assets/icons/sem-atendimento.png" alt="Sem atendimento">
+      </div>
 
-            <div class="perfil-container">
-                <div class="foto-moldura">
-                    <img id="img-usuario-atual" src="" alt="" class="foto-animada">
-                </div>
-                <h2 id="nome-usuario-atual">...</h2>
-                <p id="status-usuario-atual">Aguardando atendimento...</p>
-            </div>
-        </div>
-
+      <div id="botoes-container">
+        <button id="btn-atendi"><img src="assets/icons/atendi.png" class="icon-btn" /> ATENDI</button>
+        <button id="btn-pular"><img src="assets/icons/pular.png" class="icon-btn" /> PASSAR</button>
+        <button id="btn-gestao"><img src="assets/icons/config.png" class="icon-btn" /> FILA</button>
+      </div>
     </div>
 
-    <script src="renderer.js"></script>
+    <div id="cards-fila" class="cards-container"></div>
+
+    <table id="tabela-fila">
+      <thead>
+        <tr>
+          <th>Ordem</th>
+          <th>Balconista</th>
+          <th>Atendimentos</th>
+          <th>Última Vez</th>
+          <th>Média Espera</th>
+          <th>Tempo Fila</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <section id="tela-gestao" style="display: none;">
+    <h1>Gestão da Fila</h1>
+    <div id="balconistas-container"></div>
+    <div id="gestao-actions">
+        <button id="btn-toggle-deletion" class="btn-toggle-deletion">
+            <img src="assets/icons/lixeira.png" class="icon-btn" /> EXCLUIR
+        </button>
+        <button id="btn-adicionar-balconista">
+            <img src="assets/icons/adicionar.png" class="icon-btn" /> ADICIONAR NOVO
+        </button>
+        <button id="btn-ok">
+            <img src="assets/icons/voltar.png" class="icon-btn" /> VOLTAR
+        </button>
+    </div>
+  </section>
+
+  <div id="modal-overlay" style="display: none;">
+      <div id="modal-content">
+          <h2>📝 Novo Cadastro de Equipe</h2>
+          <form id="modal-add-form">
+              <div class="form-group">
+                  <label for="modal-nome">Nome Completo:</label>
+                  <input type="text" id="modal-nome" placeholder="Ex: Maria Silva" required>
+              </div>
+
+              <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+                  <div style="flex: 1;">
+                      <label for="modal-nasc">Nascimento:</label>
+                      <input type="date" id="modal-nasc" style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 8px;">
+                  </div>
+                  <div style="flex: 1;">
+                      <label for="modal-sexo">Sexo:</label>
+                      <select id="modal-sexo" style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 8px;">
+                          <option value="F">Feminino</option>
+                          <option value="M">Masculino</option>
+                      </select>
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <label for="modal-cel">Celular / WhatsApp:</label>
+                  <input type="tel" id="modal-cel" placeholder="(00) 00000-0000" maxlength="15" style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 8px;">
+              </div>
+              <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+
+              <div class="form-group">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                      <label style="margin: 0;">Escolha um Avatar:</label>
+                      <button type="button" id="btn-refresh-avatars" style="font-size: 11px; padding: 4px 10px; background: #e9ecef; border: 1px solid #ccc; border-radius: 15px; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                        🔄 Novas Opções
+                      </button>
+                  </div>
+                  <small style="color: #666; display: block; margin-bottom: 10px;">Clique em uma opção ou digite o nome para automático.</small>
+                  
+                  <div id="image-gallery"></div>
+              </div>
+
+              <div id="modal-image-preview-container" style="text-align: center; margin: 20px 0;">
+                  <label>Como vai ficar:</label>
+                  <div id="modal-image-preview">
+                      <span style="color: #8b8680; font-size: 12px;">Aguardando nome...</span>
+                  </div>
+              </div>
+
+              <div class="actions" style="display: flex; justify-content: space-between; margin-top: 20px;">
+                  <button type="button" id="btn-cancelar-modal" class="btn-cancelar">CANCELAR</button>
+                  <button type="submit" id="btn-salvar-modal">
+                      <span class="button-text">SALVAR CADASTRO</span>
+                      <div class="pacman-loader">
+                          <div class="pacman"></div><div class="dot"></div><div class="dot"></div>
+                      </div>
+                  </button>
+              </div>
+          </form>
+      </div>
+  </div>
+
+  <div id="modal-ajuda" style="display: none;">
+      <div class="ajuda-content">
+          <h2>🤖 Central de Ajuda da Elyse</h2>
+          <div class="ajuda-item">
+              <strong>💡 Atalhos:</strong>
+              <ul>
+                  <li><span style="color:#4f8d4f"><b>ESPAÇO:</b></span> Atender Próximo</li>
+                  <li><span style="color:#d35400"><b>P:</b></span> Pular/Passar vez</li>
+              </ul>
+          </div>
+          <div class="ajuda-footer" style="justify-content: center; display: flex;">
+              <button id="btn-fechar-ajuda">ENTENDI</button>
+          </div>
+      </div>
+  </div>
+
+  <div id="mascote-container">
+      <div id="mascote-balao" class="hidden">Olá!</div>
+      <img id="mascote-img" src="assets/mascote-idle.gif" alt="Mascote">
+  </div>
+
+  <div class="news-ticker"><div class="ticker-content">🔄 BUSCANDO NOTÍCIAS...</div></div>
+
+  <script src="renderer/falas.js"></script> 
+  <script src="renderer/app.js"></script>
 </body>
 </html>
