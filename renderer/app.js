@@ -259,9 +259,9 @@ function atualizarTela1() {
     fotoAtual.src = atual.avatarUrl || getAvatarUrlInicial(atual.nome);
   } else {
     // FILA VAZIA NO CENTRO DA TELA
-    // Usamos a Mascote-Idle (Em pé) como "Logo" de espera no centro
     nomeAtual.textContent = "SEM ATENDIMENTOS"; 
-    fotoAtual.src = "assets/bot/mascote-idle.gif"; 
+    // CORREÇÃO: Usar o ícone padrão de sem atendimento em vez da mascote
+    fotoAtual.src = "assets/icons/sem-atendimento.png"; 
   }
   atualizarTabelaFila(); atualizarCardsFila(); iniciarCronometro(); verificarEstadoFila();
 }
