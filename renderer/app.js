@@ -1,4 +1,4 @@
-// SISTEMA ELYSE - VERSÃO 4.0 (PASTA BOT + LOGICA PERSONALIZADA)
+// SISTEMA ELYSE - VERSÃO FINAL (FIX: BALÕES + INICIO RÁPIDO)
 
 const DEFAULT_BALCONISTAS = []; 
 
@@ -65,9 +65,26 @@ preloadImages();
 
 let estadoAtual = 'idle';
 let timeoutSucesso = null;
+let balaoTimeout = null;
+
+// FUNÇÃO PARA LIMPAR O BALÃO DE FALA
+function limparFala() {
+    if (mascoteBalao) {
+        mascoteBalao.classList.remove('visible');
+        mascoteBalao.textContent = "";
+    }
+    if (balaoTimeout) {
+        clearTimeout(balaoTimeout);
+        balaoTimeout = null;
+    }
+}
 
 function setMascote(estado) {
     if (estadoAtual === estado) return;
+
+    // SE O TIPO MUDOU, O BALÃO DEVE SUMIR PARA NÃO FICAR ERRADO
+    limparFala();
+
     if (mascoteImg) { 
         mascoteImg.src = GIFS[estado]; 
         estadoAtual = estado; 
@@ -76,7 +93,7 @@ function setMascote(estado) {
 
 function verificarEstadoFila() {
     if (timeoutSucesso) return; // Se estiver comemorando, não muda
-    if (document.getElementById('modal-ajuda').style.display === 'flex') return;
+    if (document.getElementById('modal-ajuda') && document.getElementById('modal-ajuda').style.display === 'flex') return;
 
     // LÓGICA PEDIDA:
     if (fila.length === 0) {
@@ -114,7 +131,10 @@ if (mascoteImg) {
         if (!isDragging) return;
         isDragging = false; container.style.cursor = 'grab';
         if (didMove) localStorage.setItem('mascotePosicao', JSON.stringify({ x: container.getBoundingClientRect().left, y: container.getBoundingClientRect().top }));
-        else { document.getElementById('modal-ajuda').style.display = 'flex'; falar("Aqui está o manual! 🤓"); }
+        else { 
+             const modalAjuda = document.getElementById('modal-ajuda');
+             if(modalAjuda) { modalAjuda.style.display = 'flex'; falar("Aqui está o manual! 🤓"); }
+        }
     };
 
     // EVENTO: Passar o mouse -> Fica com Dúvida
@@ -131,15 +151,26 @@ if (mascoteImg) {
     };
 }
 
-document.getElementById('btn-fechar-ajuda').onclick = () => { document.getElementById('modal-ajuda').style.display = 'none'; verificarEstadoFila(); };
+const btnFecharAjuda = document.getElementById('btn-fechar-ajuda');
+if(btnFecharAjuda) {
+    btnFecharAjuda.onclick = () => { document.getElementById('modal-ajuda').style.display = 'none'; verificarEstadoFila(); };
+}
 
-// FALAS DA ELYSE
-let balaoTimeout = null;
+// FALAS DA ELYSE (CORRIGIDA)
 function falar(texto) {
     if (!mascoteBalao) return;
-    if (balaoTimeout) clearTimeout(balaoTimeout);
-    mascoteBalao.textContent = texto; mascoteBalao.classList.add('visible');
-    balaoTimeout = setTimeout(() => { mascoteBalao.classList.remove('visible'); balaoTimeout = null; }, 4000);
+
+    // Reseta fala anterior
+    limparFala();
+
+    setTimeout(() => {
+        mascoteBalao.textContent = texto; 
+        mascoteBalao.classList.add('visible');
+        
+        balaoTimeout = setTimeout(() => { 
+            limparFala();
+        }, 4000);
+    }, 50);
 }
 
 // LOOP COACH (Falas aleatórias)
@@ -328,7 +359,7 @@ btnAtendi.onclick = () => {
   tempoTotalEspera[atendido.id] = (tempoTotalEspera[atendido.id] || 0) + (tempoRelogio[atendido.id] || 0);
   tempoRelogio[atendido.id] = 0;
   
-  // AQUI: ELA COMEMORA
+  // AQUI: ELA COMEMORA E LIMPA FALA ANTIGA
   setMascote('sucesso'); 
   falar("Atendimento realizado! 👍");
   
@@ -402,3 +433,7 @@ document.addEventListener('keydown', (e) => {
     if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); btnAtendi.click(); }
     if (e.key === 'p' || e.key === 'P' || e.key === 'Escape') { btnPular.click(); }
 });
+
+// --- INICIALIZAÇÃO IMEDIATA ---
+// Garante que a mascote e a fila apareçam sem delay
+atualizarTela1();

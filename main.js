@@ -1,86 +1,79 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
-const Parser = require('rss-parser');
 
-const parser = new Parser({
-  headers: {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36',
-  },
-  timeout: 10000 
-});
+let mainWindow;
+let splashWindow;
 
-function createWindow() {
-  const win = new BrowserWindow({
-    width: 1280,
+function createWindows() {
+  // --- 1. CONFIGURAÇÃO DA SPLASH SCREEN ---
+  splashWindow = new BrowserWindow({
+    width: 450,
+    height: 380,
+    frame: false,       // Sem bordas
+    transparent: true,  // Se não aparecer, mude para false para testar
+    alwaysOnTop: true,
+    center: true,
+    show: false,        // Criamos escondido
+    icon: path.join(__dirname, 'assets/icon.ico'),
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false
+    }
+  });
+
+  // Caminho absoluto para evitar erros
+  const splashPath = path.join(__dirname, 'splash.html');
+  splashWindow.loadFile(splashPath);
+
+  // Força a exibição assim que o HTML carregar
+  splashWindow.once('ready-to-show', () => {
+    splashWindow.show();
+    console.log(">> Splash Screen exibida com sucesso!");
+  });
+
+  // Se houver erro ao carregar o arquivo splash.html
+  splashWindow.webContents.on('did-fail-load', () => {
+    console.log(">> ERRO: Não foi possível encontrar o arquivo splash.html na raiz!");
+  });
+
+  // --- 2. CONFIGURAÇÃO DA JANELA PRINCIPAL ---
+  mainWindow = new BrowserWindow({
+    width: 1200,
     height: 800,
-    icon: path.join(__dirname, 'assets/icon.ico'), // Certifique-se que o icone existe
+    show: false, // Começa invisível
+    icon: path.join(__dirname, 'assets/icon.ico'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
-      nodeIntegration: false,
-      contextIsolation: true
+      nodeIntegration: true,
+      contextIsolation: false
     }
   });
 
-  win.loadFile('index.html');
-  
-  // --- REMOVE O MENU SUPERIOR DE VEZ ---
-  win.setMenuBarVisibility(false); 
-  win.removeMenu(); 
+  mainWindow.setMenuBarVisibility(false);
+  mainWindow.loadFile(path.join(__dirname, 'index.html'));
+
+  // --- 3. TROCA DAS JANELAS APÓS 4 SEGUNDOS ---
+  setTimeout(() => {
+    console.log(">> Trocando para a Janela Principal...");
+    
+    if (mainWindow) {
+      mainWindow.show();
+      mainWindow.maximize();
+    }
+
+    if (splashWindow) {
+      splashWindow.close();
+      splashWindow = null;
+    }
+  }, 4000); // 4 segundos para dar tempo da animação do splash
 }
 
-app.whenReady().then(() => {
-  createWindow();
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
-    }
-  });
-});
+app.whenReady().then(createWindows);
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+  if (process.platform !== 'darwin') app.quit();
 });
 
-// API DE NOTÍCIAS
 ipcMain.handle('buscar-noticias', async () => {
-  try {
-    const fontes = [
-      'https://news.google.com/rss/search?q=saude+brasil&hl=pt-BR&gl=BR&ceid=BR:pt-419',
-      'http://rss.uol.com.br/feed/vivabem.xml'
-    ];
-
-    let todasNoticias = [];
-
-    for (const url of fontes) {
-      try {
-        const feed = await parser.parseURL(url);
-        if (feed && feed.items) {
-            feed.items.forEach(item => {
-                const dataNoticia = new Date(item.pubDate);
-                const hoje = new Date();
-                const diferencaDias = (hoje - dataNoticia) / (1000 * 3600 * 24);
-                if (diferencaDias < 5) {
-                    todasNoticias.push({
-                        titulo: item.title.trim().toUpperCase(),
-                        data: dataNoticia
-                    });
-                }
-            });
-        }
-      } catch (erroSite) {
-        console.log(`Erro ao ler site:`, erroSite.message);
-      }
-    }
-
-    todasNoticias.sort((a, b) => b.data - a.data);
-    const manchetes = todasNoticias.slice(0, 10).map(n => n.titulo.split(' - ')[0]);
-
-    if (manchetes.length === 0) return "SISTEMA ELYSE - ONLINE";
-    return manchetes.join(' — 🩺 — ');
-
-  } catch (error) {
-    return "SISTEMA ELYSE - ONLINE"; 
-  }
+    return "Bem-vindo ao Sistema Elyse!";
 });
