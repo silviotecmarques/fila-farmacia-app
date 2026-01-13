@@ -1,0 +1,1496 @@
+[
+  {
+    "referencia": "Novalgina",
+    "principio": "Dipirona Monoidratada",
+    "genericos": ["Dipirona Monoidratada (Genérico)"],
+    "similares": ["Anador", "Magnopyrol", "Maxiliv", "Novaliv"]
+  },
+  {
+    "referencia": "Tylenol",
+    "principio": "Paracetamol",
+    "genericos": ["Paracetamol (Genérico)"],
+    "similares": ["Dôrico", "Tyne", "Vick Pyrena", "Paco"]
+  },
+  {
+    "referencia": "Buscopan Composto",
+    "principio": "Butilbrometo de Escopolamina + Dipirona",
+    "genericos": ["Butilbrometo de Escopolamina + Dipirona (Genérico)"],
+    "similares": ["Algoverin", "Atroveran Dip", "Buscoplex", "Dorescopa"]
+  },
+  {
+    "referencia": "Cataflam",
+    "principio": "Diclofenaco Potássico",
+    "genericos": ["Diclofenaco Potássico (Genérico)"],
+    "similares": ["Biofenac", "Diclofen", "Flogan", "Zideron"]
+  },
+  {
+    "referencia": "Voltaren",
+    "principio": "Diclofenaco Sódico",
+    "genericos": ["Diclofenaco Sódico (Genérico)"],
+    "similares": ["Artren", "Diclostatin", "Fenaren", "Inflaren"]
+  },
+  {
+    "referencia": "Advil / Alivium",
+    "principio": "Ibuprofeno",
+    "genericos": ["Ibuprofeno (Genérico)"],
+    "similares": ["Buscofem", "Doraliv", "Ibuflex", "Ibupril"]
+  },
+  {
+    "referencia": "Aspirina",
+    "principio": "Ácido Acetilsalicílico",
+    "genericos": ["Ácido Acetilsalicílico (Genérico)"],
+    "similares": ["AAS", "Buferin", "Somalgina"]
+  },
+  {
+    "referencia": "Nimesulida (Referência: Nisulid)",
+    "principio": "Nimesulida",
+    "genericos": ["Nimesulida (Genérico)"],
+    "similares": ["Cimelide", "Maxsulid", "Nimesil", "Scaflam"]
+  },
+  {
+    "referencia": "Ponstan",
+    "principio": "Ácido Mefenâmico",
+    "genericos": ["Ácido Mefenâmico (Genérico)"],
+    "similares": ["Mefenan", "Pontin"]
+  },
+  {
+    "referencia": "Puran T4",
+    "principio": "Levotiroxina Sódica",
+    "genericos": ["Levotiroxina Sódica (Genérico)"],
+    "similares": ["Euthyrox", "Synthroid", "Levoid"]
+  },
+{
+    "referencia": "Amoxil",
+    "principio": "Amoxicilina",
+    "genericos": ["Amoxicilina (Genérico)"],
+    "similares": ["Amoximed", "Novamox", "Hiconcil"]
+  },
+  {
+    "referencia": "Astro / Zithromax",
+    "principio": "Azitromicina",
+    "genericos": ["Azitromicina (Genérico)"],
+    "similares": ["Azitromed", "Selimax", "Azitrox"]
+  },
+  {
+    "referencia": "Clavulin",
+    "principio": "Amoxicilina + Clavulanato de Potássio",
+    "genericos": ["Amoxicilina + Clavulanato (Genérico)"],
+    "similares": ["Sigma-Clav", "Sinot Clav", "Policlavumoxil"]
+  },
+  {
+    "referencia": "Zovirax",
+    "principio": "Aciclovir",
+    "genericos": ["Aciclovir (Genérico)"],
+    "similares": ["Antivax", "Hervirax", "Aviral"]
+  },
+  {
+    "referencia": "Bactrim",
+    "principio": "Sulfametoxazol + Trimetoprima",
+    "genericos": ["Sulfametoxazol + Trimetoprima (Genérico)"],
+    "similares": ["Bactrinil", "Diazol", "Infatrim"]
+  },
+  {
+    "referencia": "Selozok",
+    "principio": "Succinato de Metoprolol",
+    "genericos": ["Succinato de Metoprolol (Genérico)"],
+    "similares": ["Metozok", "Zokpress"]
+  },
+  {
+    "referencia": "Aradois / Cozaar",
+    "principio": "Losartana Potássica",
+    "genericos": ["Losartana Potássica (Genérico)"],
+    "similares": ["Corus", "Torlós", "Zart"]
+  },
+  {
+    "referencia": "Diovan",
+    "principio": "Valsartana",
+    "genericos": ["Valsartana (Genérico)"],
+    "similares": ["Brasart", "Valsacor", "Olmetec (Nota: Olmetec é Olmesartana, verificar substituição)"]
+  },
+  {
+    "referencia": "Lipitor",
+    "principio": "Atorvastatina Cálcica",
+    "genericos": ["Atorvastatina (Genérico)"],
+    "similares": ["Lipistat", "Citalor", "Atovasterol"]
+  },
+  {
+    "referencia": "Zocor",
+    "principio": "Sinvastatina",
+    "genericos": ["Sinvastatina (Genérico)"],
+    "similares": ["Sinvascor", "Sinvastamed", "Vastatin"]
+  },
+  {
+    "referencia": "Glifage",
+    "principio": "Cloridrato de Metformina",
+    "genericos": ["Metformina (Genérico)"],
+    "similares": ["Diaformin", "Glicefor", "Metfordin"]
+  },
+  {
+    "referencia": "Daonil",
+    "principio": "Glibenclamida",
+    "genericos": ["Glibenclamida (Genérico)"],
+    "similares": ["Gliben", "Libiamid"]
+  },
+  {
+    "referencia": "Amaryl",
+    "principio": "Glimepirida",
+    "genericos": ["Glimepirida (Genérico)"],
+    "similares": ["Azukon", "Glimepil"]
+  },
+  {
+    "referencia": "Adalat",
+    "principio": "Nifedipino",
+    "genericos": ["Nifedipino (Genérico)"],
+    "similares": ["Cardalin", "Nifedilat"]
+  },
+  {
+    "referencia": "Capoten",
+    "principio": "Captopril",
+    "genericos": ["Captopril (Genérico)"],
+    "similares": ["Captomed", "Catopril", "Hipocatil"]
+  },
+  {
+    "referencia": "Losec / Gastrium",
+    "principio": "Omeprazol",
+    "genericos": ["Omeprazol (Genérico)"],
+    "similares": ["Peprazol", "Novoprazol", "Victrix", "Omepramed"]
+  },
+  {
+    "referencia": "Nexium",
+    "principio": "Esomeprazol Magnésico",
+    "genericos": ["Esomeprazol (Genérico)"],
+    "similares": ["Esogastro", "Ezomestran", "Emezol"]
+  },
+  {
+    "referencia": "Pariet",
+    "principio": "Rabeprazol Sódico",
+    "genericos": ["Rabeprazol (Genérico)"],
+    "similares": ["Barole", "Rabelis"]
+  },
+  {
+    "referencia": "Pantozol",
+    "principio": "Pantoprazol",
+    "genericos": ["Pantoprazol (Genérico)"],
+    "similares": ["Pantocal", "Peptozolan", "Pantoiv"]
+  },
+  {
+    "referencia": "Plasil",
+    "principio": "Metoclopramida",
+    "genericos": ["Metoclopramida (Genérico)"],
+    "similares": ["Flomicin", "Metoclamid"]
+  },
+  {
+    "referencia": "Digene / Milanta Plus",
+    "principio": "Hidróxido de Alumínio + Magnésio + Simeticona",
+    "genericos": ["Hidróxido de Alumínio Comp. (Genérico)"],
+    "similares": ["Gastrogel", "Pepsamar", "Kolantyl"]
+  },
+  {
+    "referencia": "Luftal",
+    "principio": "Simeticona",
+    "genericos": ["Simeticona (Genérico)"],
+    "similares": ["Flagass", "Flutua", "Simedigest"]
+  },
+  {
+    "referencia": "Allegra",
+    "principio": "Cloridrato de Fexofenadina",
+    "genericos": ["Fexofenadina (Genérico)"],
+    "similares": ["Altiva", "Rafex", "Fexodane"]
+  },
+  {
+    "referencia": "Claritin",
+    "principio": "Loratadina",
+    "genericos": ["Loratadina (Genérico)"],
+    "similares": ["Claridil", "Loralerg", "Loratamed"]
+  },
+  {
+    "referencia": "Zyrtec",
+    "principio": "Dicloridrato de Cetirizina",
+    "genericos": ["Cetirizina (Genérico)"],
+    "similares": ["Cetihexal", "Zetalerg"]
+  },
+  {
+    "referencia": "Ebastel",
+    "principio": "Ebastina",
+    "genericos": ["Ebastina (Genérico)"],
+    "similares": ["Ebast", "Noebas"]
+  },
+  {
+    "referencia": "Polaramine",
+    "principio": "Maleato de Dexclorfeniramina",
+    "genericos": ["Dexclorfeniramina (Genérico)"],
+    "similares": ["Histamin", "Polaren", "Alermine"]
+  },
+  {
+    "referencia": "Hixizine",
+    "principio": "Cloridrato de Hidroxizina",
+    "genericos": ["Hidroxizina (Genérico)"],
+    "similares": ["Prurit", "Poderan"]
+  },
+  {
+    "referencia": "Avamys / Nasonex",
+    "principio": "Furoato de Fluticasona / Mometasona",
+    "genericos": ["Mometasona Spray (Genérico)"],
+    "similares": ["Busonid (Nota: Budesonida)", "Noex", "Plurair"]
+  },
+  {
+    "referencia": "Decongex Plus",
+    "principio": "Fenilefrina + Bronfeniramina",
+    "genericos": ["Fenilefrina + Bronfeniramina (Genérico)"],
+    "similares": ["Bronal", "Descon"]
+  },
+  {
+    "referencia": "Fluimucil",
+    "principio": "Acetilcisteína",
+    "genericos": ["Acetilcisteína (Genérico)"],
+    "similares": ["Cisteil", "Flucistein", "Aseticin"]
+  },
+  {
+    "referencia": "Arovit",
+    "principio": "Vitamina A (Retinol)",
+    "genericos": ["Vitamina A (Genérico)"],
+    "similares": ["Adedon", "Retinar"]
+  },
+  {
+    "referencia": "Cebion / Redoxon",
+    "principio": "Ácido Ascórbico (Vitamina C)",
+    "genericos": ["Vitamina C (Genérico)"],
+    "similares": ["Cewin", "Energil C", "Bio-C"]
+  },
+  {
+    "referencia": "Addera D3",
+    "principio": "Colecalciferol (Vitamina D3)",
+    "genericos": ["Vitamina D3 (Genérico)"],
+    "similares": ["Ddepura", "D-Vitta", "D-Sunt"]
+  },
+  {
+    "referencia": "Neurorubin / Citoneurin",
+    "principio": "Vitaminas B1 + B6 + B12",
+    "genericos": ["Polivitamínico B (Genérico)"],
+    "similares": ["Dexaneurin", "Dozebe", "Neurobion"]
+  },
+{
+    "referencia": "Concor",
+    "principio": "Bisoprolol",
+    "genericos": ["Fumarato de Bisoprolol (Genérico)"],
+    "similares": ["Boncor", "Iccor", "Biso"]
+  },
+  {
+    "referencia": "Aprozide / Avapro",
+    "principio": "Irbesartana",
+    "genericos": ["Irbesartana (Genérico)"],
+    "similares": ["Irbes", "Venitro"]
+  },
+  {
+    "referencia": "Natrilix",
+    "principio": "Indapamida",
+    "genericos": ["Indapamida (Genérico)"],
+    "similares": ["Indapen", "Indalix"]
+  },
+  {
+    "referencia": "Aldomet",
+    "principio": "Metildopa",
+    "genericos": ["Metildopa (Genérico)"],
+    "similares": ["Amethidopa", "Metildopamed"]
+  },
+  {
+    "referencia": "Rivotril",
+    "principio": "Clonazepam",
+    "genericos": ["Clonazepam (Genérico)"],
+    "similares": ["Navotrax", "Clonotril", "Zilepam"]
+  },
+  {
+    "referencia": "Lexotan",
+    "principio": "Bromazepam",
+    "genericos": ["Bromazepam (Genérico)"],
+    "similares": ["Somalium", "Bromoxon", "Deptran"]
+  },
+  {
+    "referencia": "Frontal",
+    "principio": "Alprazolam",
+    "genericos": ["Alprazolam (Genérico)"],
+    "similares": ["Apraz", "Zoldam", "Alprazomed"]
+  },
+  {
+    "referencia": "Valium",
+    "principio": "Diazepam",
+    "genericos": ["Diazepam (Genérico)"],
+    "similares": ["Dienpax", "Relpax (Nota: verificar princípio)", "Compaz"]
+  },
+  {
+    "referencia": "Stilnox",
+    "principio": "Hemitartarato de Zolpidem",
+    "genericos": ["Zolpidem (Genérico)"],
+    "similares": ["Patz", "Turno", "Zolpivix"]
+  },
+  {
+    "referencia": "Prozac / Daforin",
+    "principio": "Fluoxetina",
+    "genericos": ["Cloridrato de Fluoxetina (Genérico)"],
+    "similares": ["Eufor", "Fluxene", "Verotina"]
+  },
+  {
+    "referencia": "Zoloft",
+    "principio": "Sertralina",
+    "genericos": ["Cloridrato de Sertralina (Genérico)"],
+    "similares": ["Assert", "Tolrest", "Serenata"]
+  },
+  {
+    "referencia": "Pondera",
+    "principio": "Paroxetina",
+    "genericos": ["Cloridrato de Paroxetina (Genérico)"],
+    "similares": ["Paxil", "Roxetin", "Paxtrat"]
+  },
+  {
+    "referencia": "Efexor XR",
+    "principio": "Venlafaxina",
+    "genericos": ["Cloridrato de Venlafaxina (Genérico)"],
+    "similares": ["Alenthus", "Venlift OD", "Venfax"]
+  },
+  {
+    "referencia": "Gardenal",
+    "principio": "Fenobarbital",
+    "genericos": ["Fenobarbital (Genérico)"],
+    "similares": ["Fenocris", "Barbitron"]
+  },
+  {
+    "referencia": "Depakene",
+    "principio": "Valproato de Sódio",
+    "genericos": ["Valproato de Sódio (Genérico)"],
+    "similares": ["Torval", "Epilenil", "Valpakine"]
+  },
+  {
+    "referencia": "Tegretol",
+    "principio": "Carbamazepina",
+    "genericos": ["Carbamazepina (Genérico)"],
+    "similares": ["Convulsan", "Tegretard"]
+  },
+  {
+    "referencia": "Yasmin / Elani Ciclo",
+    "principio": "Drospirenona + Etinilestradiol",
+    "genericos": ["Drospirenona + Etinilestradiol (Genérico)"],
+    "similares": ["Iumi", "Artemidis", "Lumea"]
+  },
+  {
+    "referencia": "Selene / Diane 35",
+    "principio": "Ciproterona + Etinilestradiol",
+    "genericos": ["Ciproterona + Etinilestradiol (Genérico)"],
+    "similares": ["Diclin", "Lydian", "Tess"]
+  },
+  {
+    "referencia": "Ciclo 21",
+    "principio": "Levonorgestrel + Etinilestradiol",
+    "genericos": ["Levonorgestrel + Etinilestradiol (Genérico)"],
+    "similares": ["Microvlar", "Nordette", "Neovlar"]
+  },
+  {
+    "referencia": "Gyno-Icaden",
+    "principio": "Isoconazol",
+    "genericos": ["Nitrato de Isoconazol (Genérico)"],
+    "similares": ["Icaden", "Gynomax"]
+  },
+  {
+    "referencia": "Gyno-Daktarin",
+    "principio": "Miconazol",
+    "genericos": ["Nitrato de Miconazol (Genérico)"],
+    "similares": ["Daktarin", "Vodol Gyn"]
+  },
+  {
+    "referencia": "Puran T4 (Repetição para reforço)",
+    "principio": "Levotiroxina",
+    "genericos": ["Levotiroxina (Genérico)"],
+    "similares": ["Euthyrox", "Synthroid", "Levoid"]
+  },
+  {
+    "referencia": "Dovonex",
+    "principio": "Calcipotriol",
+    "genericos": ["Calcipotriol (Genérico)"],
+    "similares": ["Daivonex", "Psorcutan"]
+  },
+  {
+    "referencia": "Roacutan",
+    "principio": "Isotretinoína",
+    "genericos": ["Isotretinoína (Genérico)"],
+    "similares": ["Acnecutan", "Avitretin"]
+  },
+{
+    "referencia": "Norvasc / Amlovasc",
+    "principio": "Besilato de Anlodipino",
+    "genericos": ["Anlodipino (Genérico)"],
+    "similares": ["Pressat", "Nicord", "Cordipina"]
+  },
+  {
+    "referencia": "Renitec / Eupressin",
+    "principio": "Maleato de Enalapril",
+    "genericos": ["Enalapril (Genérico)"],
+    "similares": ["Angiopril", "Atensina (Nota: Clonidina)", "Enaprotec"]
+  },
+  {
+    "referencia": "Atenol / Angipress",
+    "principio": "Atenolol",
+    "genericos": ["Atenolol (Genérico)"],
+    "similares": ["Ablok", "Atenorex", "Plenacor"]
+  },
+  {
+    "referencia": "Clorana / Hidroton",
+    "principio": "Hidroclorotiazida",
+    "genericos": ["Hidroclorotiazida (Genérico)"],
+    "similares": ["Diuix", "Durene"]
+  },
+  {
+    "referencia": "Lasix",
+    "principio": "Furosemida",
+    "genericos": ["Furosemida (Genérico)"],
+    "similares": ["Neofurosemida", "Uritol"]
+  },
+  {
+    "referencia": "Aldactone",
+    "principio": "Espironolactona",
+    "genericos": ["Espironolactona (Genérico)"],
+    "similares": ["Spiroctan", "Diupress"]
+  },
+  {
+    "referencia": "Marevan / Coumadin",
+    "principio": "Varfarina Sódica",
+    "genericos": ["Varfarina (Genérico)"],
+    "similares": ["Wafarin", "Marfarin"]
+  },
+  {
+    "referencia": "Plavix / Iscover",
+    "principio": "Bissulfato de Clopidogrel",
+    "genericos": ["Clopidogrel (Genérico)"],
+    "similares": ["Platogrel", "Clopivix"]
+  },
+  {
+    "referencia": "Xarelto",
+    "principio": "Rivaroxabana",
+    "genericos": ["Rivaroxabana (Genérico)"],
+    "similares": ["Rivaxa", "Xariv"]
+  },
+  {
+    "referencia": "Crestor / Vivacor",
+    "principio": "Rosuvastatina Cálcica",
+    "genericos": ["Rosuvastatina (Genérico)"],
+    "similares": ["Rosucor", "Roxflan", "Trezor"]
+  },
+  {
+    "referencia": "Zetia / Ezetrol",
+    "principio": "Ezetimiba",
+    "genericos": ["Ezetimiba (Genérico)"],
+    "similares": ["Zimiba", "Ezetix"]
+  },
+  {
+    "referencia": "Proscar / Finalop",
+    "principio": "Finasterida",
+    "genericos": ["Finasterida (Genérico)"],
+    "similares": ["Propecia", "Prostide"]
+  },
+  {
+    "referencia": "Secotex / Tamisa",
+    "principio": "Cloridrato de Tansulosina",
+    "genericos": ["Tansulosina (Genérico)"],
+    "similares": ["Tansulon", "Omnic"]
+  },
+  {
+    "referencia": "Viagra / Pramil",
+    "principio": "Citrato de Sildenafila",
+    "genericos": ["Sildenafila (Genérico)"],
+    "similares": ["Ah-Zul", "Vimax", "Sollevare"]
+  },
+  {
+    "referencia": "Cialis",
+    "principio": "Tadalafila",
+    "genericos": ["Tadalafila (Genérico)"],
+    "similares": ["Zyad", "Tada", "Tadalaf"]
+  },
+  {
+    "referencia": "Motilium",
+    "principio": "Domperidona",
+    "genericos": ["Domperidona (Genérico)"],
+    "similares": ["Domperix", "Peridal"]
+  },
+  {
+    "referencia": "Vonau Flash",
+    "principio": "Cloridrato de Ondansetrona",
+    "genericos": ["Ondansetrona (Genérico)"],
+    "similares": ["Nausedron", "Ondansan"]
+  },
+  {
+    "referencia": "Dramin / Dramin B6",
+    "principio": "Dimenidrinato + Piridoxina",
+    "genericos": ["Dimenidrinato (Genérico)"],
+    "similares": ["Nausicalm", "Dimenidrin"]
+  },
+  {
+    "referencia": "Labirin / Betaserc",
+    "principio": "Dicloridrato de Betahistina",
+    "genericos": ["Betahistina (Genérico)"],
+    "similares": ["Betina", "Labene"]
+  },
+  {
+    "referencia": "Tebonin / Tanakan",
+    "principio": "Ginkgo Biloba",
+    "genericos": ["Ginkgo Biloba (Fitoterápico)"],
+    "similares": ["Equilid (Nota: Sulpirida)", "Ginkomed"]
+  },
+{
+    "referencia": "Benzetacil",
+    "principio": "Benzilpenicilina Benzatina",
+    "genericos": ["Benzilpenicilina Benzatina (Genérico)"],
+    "similares": ["Bepeben", "Longacilin"]
+  },
+  {
+    "referencia": "Sporanox",
+    "principio": "Itraconazol",
+    "genericos": ["Itraconazol (Genérico)"],
+    "similares": ["Trunon", "Itrazol", "Fungitox"]
+  },
+  {
+    "referencia": "Diflucan / Zoltec",
+    "principio": "Fluconazol",
+    "genericos": ["Fluconazol (Genérico)"],
+    "similares": ["Canditrat", "Fluconeo", "Pronazol"]
+  },
+  {
+    "referencia": "Nizoral",
+    "principio": "Cetoconazol",
+    "genericos": ["Cetoconazol (Genérico)"],
+    "similares": ["Candicort (Nota: + Betametasona)", "Cetonéo", "Cetomed"]
+  },
+  {
+    "referencia": "Haldol",
+    "principio": "Haloperidol",
+    "genericos": ["Haloperidol (Genérico)"],
+    "similares": ["Halo", "Uni Haloper"]
+  },
+  {
+    "referencia": "Amplictil",
+    "principio": "Cloridrato de Clorpromazina",
+    "genericos": ["Clorpromazina (Genérico)"],
+    "similares": ["Longactil"]
+  },
+  {
+    "referencia": "Risperdal",
+    "principio": "Risperidona",
+    "genericos": ["Risperidona (Genérico)"],
+    "similares": ["Viverdal", "Respidon", "Zargus"]
+  },
+  {
+    "referencia": "Zyprexa",
+    "principio": "Olanzapina",
+    "genericos": ["Olanzapina (Genérico)"],
+    "similares": ["Zap", "Axonium", "Zypadhera"]
+  },
+  {
+    "referencia": "Seroquel",
+    "principio": "Hemifumarato de Quetiapina",
+    "genericos": ["Quetiapina (Genérico)"],
+    "similares": ["Quetros", "Queops", "Queropax"]
+  },
+  {
+    "referencia": "Geodon",
+    "principio": "Cloridrato de Ziprasidona",
+    "genericos": ["Ziprasidona (Genérico)"],
+    "similares": ["Ziradon"]
+  },
+  {
+    "referencia": "Abilify",
+    "principio": "Aripiprazol",
+    "genericos": ["Aripiprazol (Genérico)"],
+    "similares": ["Aristab", "Aripighen"]
+  },
+  {
+    "referencia": "Carbolitium",
+    "principio": "Carbonato de Lítio",
+    "genericos": ["Carbonato de Lítio (Genérico)"],
+    "similares": ["Litionil", "Litocit (Nota: Citrato de Potássio, cuidado!)"]
+  },
+  {
+    "referencia": "Lamictal",
+    "principio": "Lamotrigina",
+    "genericos": ["Lamotrigina (Genérico)"],
+    "similares": ["Neural", "Lamitor", "Amotrigin"]
+  },
+  {
+    "referencia": "Topamax",
+    "principio": "Topiramato",
+    "genericos": ["Topiramato (Genérico)"],
+    "similares": ["Amato", "Vidmax", "Topitrat"]
+  },
+  {
+    "referencia": "Lyrica",
+    "principio": "Pregabalina",
+    "genericos": ["Pregabalina (Genérico)"],
+    "similares": ["Prebictal", "Insit", "Pregarica"]
+  },
+  {
+    "referencia": "Neurontin",
+    "principio": "Gabapentina",
+    "genericos": ["Gabapentina (Genérico)"],
+    "similares": ["Progab", "Gabbie"]
+  },
+  {
+    "referencia": "Lexapro / Exodus",
+    "principio": "Escitalopram",
+    "genericos": ["Oxalato de Escitalopram (Genérico)"],
+    "similares": ["Espram", "Escilex", "Remilex"]
+  },
+  {
+    "referencia": "Cymbalta / Velija",
+    "principio": "Cloridrato de Duloxetina",
+    "genericos": ["Duloxetina (Genérico)"],
+    "similares": ["Dual", "Dulocore"]
+  },
+  {
+    "referencia": "Anafranil",
+    "principio": "Cloridrato de Clomipramina",
+    "genericos": ["Clomipramina (Genérico)"],
+    "similares": ["Clo"]
+  },
+  {
+    "referencia": "Tofranil",
+    "principio": "Cloridrato de Imipramina",
+    "genericos": ["Imipramina (Genérico)"],
+    "similares": ["Imipra", "Uni Imiprax"]
+  },
+  {
+    "referencia": "Amitril / Tryptanol",
+    "principio": "Cloridrato de Amitriptilina",
+    "genericos": ["Amitriptilina (Genérico)"],
+    "similares": ["Neurotrypt", "Amytril"]
+  },
+  {
+    "referencia": "Aropax",
+    "principio": "Cloridrato de Paroxetina",
+    "genericos": ["Paroxetina (Genérico)"],
+    "similares": ["Pondera", "Roxetin"]
+  },
+  {
+    "referencia": "Mirtaz / Remeron",
+    "principio": "Mirtazapina",
+    "genericos": ["Mirtazapina (Genérico)"],
+    "similares": ["Menelat", "Razapina"]
+  },
+  {
+    "referencia": "Donaren",
+    "principio": "Cloridrato de Trazodona",
+    "genericos": ["Trazodona (Genérico)"],
+    "similares": ["Luvox (Nota: Fluvoxamina)", "Trazonil"]
+  },
+  {
+    "referencia": "Luvox",
+    "principio": "Maleato de Fluvoxamina",
+    "genericos": ["Fluvoxamina (Genérico)"],
+    "similares": ["Revoc"]
+  },
+{
+    "referencia": "Lacril / Hyabak",
+    "principio": "Hialuronato de Sódio / Carmelose Sódica",
+    "genericos": ["Carmelose Sódica (Genérico)"],
+    "similares": ["Fresh Tears", "Adapt", "Lacrifilm"]
+  },
+  {
+    "referencia": "Patanol / Opatanol",
+    "principio": "Cloridrato de Olopatadina",
+    "genericos": ["Olopatadina (Genérico)"],
+    "similares": ["Patalerg", "Olofresh"]
+  },
+  {
+    "referencia": "Vigamox",
+    "principio": "Moxifloxacino",
+    "genericos": ["Moxifloxacino Colírio (Genérico)"],
+    "similares": ["Moxivig", "Moxiflo"]
+  },
+  {
+    "referencia": "Tobradex",
+    "principio": "Tobramicina + Dexametasona",
+    "genericos": ["Tobramicina + Dexametasona (Genérico)"],
+    "similares": ["Tobracort", "Tobragran"]
+  },
+  {
+    "referencia": "Maxitrol",
+    "principio": "Dexametasona + Neomicina + Polimixina B",
+    "genericos": ["Dexametasona + Neomicina + Polimixina B (Genérico)"],
+    "similares": ["Dexaneurin (Nota: Verificar uso)", "Polidexa"]
+  },
+  {
+    "referencia": "Berotec",
+    "principio": "Bromidrato de Fenoterol",
+    "genericos": ["Fenoterol (Genérico)"],
+    "similares": ["Fenotrin", "Bromidrato de Fenoterol (Similares descontinuados)"]
+  },
+  {
+    "referencia": "Atrovent",
+    "principio": "Brometo de Ipratrópio",
+    "genericos": ["Ipratrópio (Genérico)"],
+    "similares": ["Ipravent", "Ipratrop"]
+  },
+  {
+    "referencia": "Aerolin / Ventolin",
+    "principio": "Sulfato de Salbutamol",
+    "genericos": ["Salbutamol (Genérico)"],
+    "similares": ["Aerodini", "Salbuterm"]
+  },
+  {
+    "referencia": "Seretide / Advair",
+    "principio": "Fluticasona + Salmeterol",
+    "genericos": ["Fluticasona + Salmeterol (Genérico)"],
+    "similares": ["Lugano", "Alenia (Nota: Formoterol + Budesonida)"]
+  },
+  {
+    "referencia": "Symbicort",
+    "principio": "Budesonida + Formoterol",
+    "genericos": ["Budesonida + Formoterol (Genérico)"],
+    "similares": ["Alenia", "Foraseq", "Vannair"]
+  },
+  {
+    "referencia": "Singulair",
+    "principio": "Montelucaste de Sódio",
+    "genericos": ["Montelucaste (Genérico)"],
+    "similares": ["Montelair", "Piemonte"]
+  },
+  {
+    "referencia": "Meticorten / Predsim",
+    "principio": "Prednisona / Prednisolona",
+    "genericos": ["Prednisona (Genérico)", "Prednisolona (Genérico)"],
+    "similares": ["Corticorten", "Prelone"]
+  },
+  {
+    "referencia": "Decadron",
+    "principio": "Dexametasona",
+    "genericos": ["Dexametasona (Genérico)"],
+    "similares": ["Dexamex", "Dexametason"]
+  },
+  {
+    "referencia": "Celestamine",
+    "principio": "Betametasona + Dexclorfeniramina",
+    "genericos": ["Betametasona + Dexclorfeniramina (Genérico)"],
+    "similares": ["Celemax", "Koidex"]
+  },
+  {
+    "referencia": "Diprospan",
+    "principio": "Dipropionato de Betametasona + Fosfato de Betametasona",
+    "genericos": ["Betametasona injetável (Genérico)"],
+    "similares": ["Beta Trinta", "Duoflam"]
+  },
+  {
+    "referencia": "Proctyl",
+    "principio": "Policresuleno + Cinchocaína",
+    "genericos": ["Policresuleno + Cinchocaína (Genérico)"],
+    "similares": ["Proctosan", "Procto-Glyvenol"]
+  },
+  {
+    "referencia": "Flagyl",
+    "principio": "Metronidazol",
+    "genericos": ["Metronidazol (Genérico)"],
+    "similares": ["Metrozol", "Metroniflex"]
+  },
+  {
+    "referencia": "Secnidal",
+    "principio": "Secnidazol",
+    "genericos": ["Secnidazol (Genérico)"],
+    "similares": ["Secnax", "Secni", "Unidazol"]
+  },
+  {
+    "referencia": "Annita",
+    "principio": "Nitazoxanida",
+    "genericos": ["Nitazoxanida (Genérico)"],
+    "similares": ["Azitrox (Nota: verificar)", "Zonit"]
+  },
+  {
+    "referencia": "Zentel",
+    "principio": "Albendazol",
+    "genericos": ["Albendazol (Genérico)"],
+    "similares": ["Monozol", "Albendomed"]
+  },
+  {
+    "referencia": "Pantelmin",
+    "principio": "Mebendazol",
+    "genericos": ["Mebendazol (Genérico)"],
+    "similares": ["Mebend", "Belmi"]
+  },
+  {
+    "referencia": "Loprox",
+    "principio": "Ciclopirox Olamina",
+    "genericos": ["Ciclopirox Olamina (Genérico)"],
+    "similares": ["Micolamina", "Pirolam"]
+  },
+  {
+    "referencia": "Pevaryl",
+    "principio": "Nitrato de Econazol",
+    "genericos": ["Econazol (Genérico)"],
+    "similares": ["Micostyl"]
+  },
+  {
+    "referencia": "Trofodermin",
+    "principio": "Acetato de Clostebol + Neomicina",
+    "genericos": ["Clostebol + Neomicina (Genérico)"],
+    "similares": ["Clostemin", "Neodermin"]
+  },
+  {
+    "referencia": "Bepantol",
+    "principio": "Dexpantenol",
+    "genericos": ["Dexpantenol (Genérico)"],
+    "similares": ["Probentol", "Dexpanol", "Bepantriz"]
+  },
+
+{
+    "referencia": "Mesigyna",
+    "principio": "Enantato de Noretestosterona + Valerato de Estradiol",
+    "genericos": ["Enantato de Noretestosterona + Valerato de Estradiol (Genérico)"],
+    "similares": ["Noregyna", "Diva", "Mesidox"]
+  },
+  {
+    "referencia": "Iumi / Yaz",
+    "principio": "Drospirenona + Etinilestradiol",
+    "genericos": ["Drospirenona + Etinilestradiol (Genérico)"],
+    "similares": ["Elani Ciclo", "Lumea", "Mirelle"]
+  },
+  {
+    "referencia": "Gracial",
+    "principio": "Desogestrel + Etinilestradiol",
+    "genericos": ["Desogestrel + Etinilestradiol (Genérico)"],
+    "similares": ["Femina", "Mercilon", "Microdiol"]
+  },
+  {
+    "referencia": "Livial",
+    "principio": "Tibolona",
+    "genericos": ["Tibolona (Genérico)"],
+    "similares": ["Libiam", "Reduclim", "Tibol"]
+  },
+  {
+    "referencia": "Evista",
+    "principio": "Cloridrato de Raloxifeno",
+    "genericos": ["Raloxifeno (Genérico)"],
+    "similares": ["Roxifen"]
+  },
+  {
+    "referencia": "Combodart",
+    "principio": "Dutasterida + Cloridrato de Tansulosina",
+    "genericos": ["Dutasterida + Tansulosina (Genérico)"],
+    "similares": ["Duomo HP", "Dutam"]
+  },
+  {
+    "referencia": "Avodart",
+    "principio": "Dutasterida",
+    "genericos": ["Dutasterida (Genérico)"],
+    "similares": ["Dutas", "Dutam"]
+  },
+  {
+    "referencia": "Duodart",
+    "principio": "Dutasterida + Tansulosina",
+    "genericos": ["Dutasterida + Tansulosina (Genérico)"],
+    "similares": ["Combodart"]
+  },
+  {
+    "referencia": "Tamiflu",
+    "principio": "Fosfato de Oseltamivir",
+    "genericos": ["Oseltamivir (Genérico)"],
+    "similares": ["Antiflu"]
+  },
+  {
+    "referencia": "Valtrex",
+    "principio": "Cloridrato de Valaciclovir",
+    "genericos": ["Valaciclovir (Genérico)"],
+    "similares": ["Valaciclo", "Valavir"]
+  },
+  {
+    "referencia": "Epivir",
+    "principio": "Lamivudina",
+    "genericos": ["Lamivudina (Genérico)"],
+    "similares": ["Lamivud"]
+  },
+  {
+    "referencia": "Viread",
+    "principio": "Fumarato de Tenofovir Desoproxila",
+    "genericos": ["Tenofovir (Genérico)"],
+    "similares": ["Tenof"]
+  },
+  {
+    "referencia": "Sustiva",
+    "principio": "Efavirenz",
+    "genericos": ["Efavirenz (Genérico)"],
+    "similares": ["Efavir"]
+  },
+  {
+    "referencia": "Kaletra",
+    "principio": "Lopinavir + Ritonavir",
+    "genericos": ["Lopinavir + Ritonavir (Genérico)"],
+    "similares": ["Lopirito"]
+  },
+  {
+    "referencia": "Baraclude",
+    "principio": "Entecavir",
+    "genericos": ["Entecavir (Genérico)"],
+    "similares": ["Entrevir"]
+  },
+  {
+    "referencia": "Imuran",
+    "principio": "Azatioprina",
+    "genericos": ["Azatioprina (Genérico)"],
+    "similares": ["Azatiop"]
+  },
+  {
+    "referencia": "Cellcept",
+    "principio": "Micofenolato de Mofetila",
+    "genericos": ["Micofenolato de Mofetila (Genérico)"],
+    "similares": ["Mofetil"]
+  },
+  {
+    "referencia": "Sandimmun Neoral",
+    "principio": "Ciclosporina",
+    "genericos": ["Ciclosporina (Genérico)"],
+    "similares": ["Sigmasporin"]
+  },
+  {
+    "referencia": "Rapamune",
+    "principio": "Sirolimo",
+    "genericos": ["Sirolimo (Genérico)"],
+    "similares": ["Sirol"]
+  },
+  {
+    "referencia": "Prograf",
+    "principio": "Tacrolimo",
+    "genericos": ["Tacrolimo (Genérico)"],
+    "similares": ["Tacro"]
+  },
+{
+    "referencia": "Amato / Topamax",
+    "principio": "Topiramato",
+    "genericos": ["Topiramato (Genérico)"],
+    "similares": ["Vidmax", "Topitrat", "Toptil"]
+  },
+  {
+    "referencia": "Araponga / Keppra",
+    "principio": "Levetiracetam",
+    "genericos": ["Levetiracetam (Genérico)"],
+    "similares": ["Antisur", "Etira", "Levetiram"]
+  },
+  {
+    "referencia": "Depakote",
+    "principio": "Divalproato de Sódio",
+    "genericos": ["Divalproato de Sódio (Genérico)"],
+    "similares": ["Divalcon", "Divalproato"]
+  },
+  {
+    "referencia": "Trileptal",
+    "principio": "Oxcarbazepina",
+    "genericos": ["Oxcarbazepina (Genérico)"],
+    "similares": ["Oleptal", "Oxcarb"]
+  },
+  {
+    "referencia": "Vimpat",
+    "principio": "Lacosamida",
+    "genericos": ["Lacosamida (Genérico)"],
+    "similares": ["Lacofree", "Lacos"]
+  },
+  {
+    "referencia": "Stalevo",
+    "principio": "Levodopa + Carbidopa + Entacapona",
+    "genericos": ["Levodopa + Carbidopa + Entacapona (Genérico)"],
+    "similares": ["Parkitrat"]
+  },
+  {
+    "referencia": "Prolopa",
+    "principio": "Levodopa + Cloridrato de Benserazida",
+    "genericos": ["Levodopa + Benserazida (Genérico)"],
+    "similares": ["Ekson", "Levodopa/Benserazida Similares"]
+  },
+  {
+    "referencia": "Mantidan",
+    "principio": "Cloridrato de Amantadina",
+    "genericos": ["Amantadina (Genérico)"],
+    "similares": ["Amantamed"]
+  },
+  {
+    "referencia": "Sifrol",
+    "principio": "Dicloridrato de Pramipexol",
+    "genericos": ["Pramipexol (Genérico)"],
+    "similares": ["Pramitrem", "Stable"]
+  },
+  {
+    "referencia": "Ebix / Alois",
+    "principio": "Cloridrato de Memantina",
+    "genericos": ["Memantina (Genérico)"],
+    "similares": ["Memantl", "Vance", "Zider"]
+  },
+  {
+    "referencia": "Exelon",
+    "principio": "Rivastigmina",
+    "genericos": ["Rivastigmina (Genérico)"],
+    "similares": ["Prometax", "Rivastig"]
+  },
+  {
+    "referencia": "Eranz",
+    "principio": "Cloridrato de Donepezila",
+    "genericos": ["Donepezila (Genérico)"],
+    "similares": ["Doneliv", "Lixit", "Doner"]
+  },
+  {
+    "referencia": "Concerta / Ritalina LA",
+    "principio": "Cloridrato de Metilfenidato",
+    "genericos": ["Metilfenidato (Genérico)"],
+    "similares": ["Consiv", "Attenze"]
+  },
+  {
+    "referencia": "Venvanse",
+    "principio": "Dimesilato de Lisdexanfetamina",
+    "genericos": ["Lisdexanfetamina (Genérico - Recém aprovado)"],
+    "similares": ["Juneve", "Lyberdia"]
+  },
+  {
+    "referencia": "Melleril",
+    "principio": "Cloridrato de Tioridazina",
+    "genericos": ["Tioridazina (Genérico)"],
+    "similares": ["Unitioridazin"]
+  },
+  {
+    "referencia": "Stelazine",
+    "principio": "Cloridrato de Trifluoperazina",
+    "genericos": ["Trifluoperazina (Genérico)"],
+    "similares": ["Trifluo"]
+  },
+  {
+    "referencia": "Neozine",
+    "principio": "Levomepromazina",
+    "genericos": ["Levomepromazina (Genérico)"],
+    "similares": ["Levozin"]
+  },
+  {
+    "referencia": "Nozinan",
+    "principio": "Levomepromazina",
+    "genericos": ["Levomepromazina (Genérico)"],
+    "similares": ["Neozine"]
+  },
+  {
+    "referencia": "Clopi",
+    "principio": "Clopixol (Zuclopentixol)",
+    "genericos": ["Zuclopentixol (Genérico)"],
+    "similares": ["Clopixol Acuphase", "Clopixol Depot"]
+  },
+  {
+    "referencia": "Eudon",
+    "principio": "Bromoprida",
+    "genericos": ["Bromoprida (Genérico)"],
+    "similares": ["Digesan", "Plexu"]
+  },
+{
+    "referencia": "Novacort / Trok-N",
+    "principio": "Cetoconazol + Dipropionato de Betametasona + Sulfato de Neomicina",
+    "genericos": ["Cetoconazol + Betametasona + Neomicina (Genérico)"],
+    "similares": ["Triderm", "Tricort", "Cetonet"]
+  },
+  {
+    "referencia": "Quadriderm",
+    "principio": "Valerato de Betametasona + Gentamicina + Tolnaftato + Clioquinol",
+    "genericos": ["Betametasona + Gentamicina + Tolnaftato + Clioquinol (Genérico)"],
+    "similares": ["Multiderm", "Quadricort"]
+  },
+  {
+    "referencia": "Psorex",
+    "principio": "Propionato de Clobetasol",
+    "genericos": ["Clobetasol (Genérico)"],
+    "similares": ["Clob-X", "Clobenes", "Psocort"]
+  },
+  {
+    "referencia": "Diprogenta",
+    "principio": "Dipropionato de Betametasona + Sulfato de Gentamicina",
+    "genericos": ["Betametasona + Gentamicina (Genérico)"],
+    "similares": ["Betagentam", "Genderm", "Diprobet"]
+  },
+  {
+    "referencia": "Nebacetin",
+    "principio": "Sulfato de Neomicina + Bacitracina Zíncica",
+    "genericos": ["Neomicina + Bacitracina (Genérico)"],
+    "similares": ["Feridex", "Neomax", "Nebacid"]
+  },
+  {
+    "referencia": "Hirudoid",
+    "principio": "Polissulfato de Mucopolissacarídeo",
+    "genericos": ["Polissulfato de Mucopolissacarídeo (Genérico)"],
+    "similares": ["Gelol (Nota: Verificar princípio)", "Hemovirtus (Nota: Uso específico)"]
+  },
+  {
+    "referencia": "Keflex",
+    "principio": "Cefalexina",
+    "genericos": ["Cefalexina (Genérico)"],
+    "similares": ["Cefanal", "Cefalexin", "Cefenéo"]
+  },
+  {
+    "referencia": "Cipro / Ciloxan",
+    "principio": "Cloridrato de Ciprofloxacino",
+    "genericos": ["Ciprofloxacino (Genérico)"],
+    "similares": ["Ciprobiot", "Quinoflox", "Ciprocilin"]
+  },
+  {
+    "referencia": "Floxstat",
+    "principio": "Ofloxacino",
+    "genericos": ["Ofloxacino (Genérico)"],
+    "similares": ["Oflocin"]
+  },
+  {
+    "referencia": "Levaquin / Tamiram",
+    "principio": "Levofloxacino",
+    "genericos": ["Levofloxacino (Genérico)"],
+    "similares": ["Levoxin", "Levo", "Levoflox"]
+  },
+  {
+    "referencia": "Tavanic",
+    "principio": "Levofloxacino Hemieratado",
+    "genericos": ["Levofloxacino (Genérico)"],
+    "similares": ["Levoflox", "Tamiram"]
+  },
+  {
+    "referencia": "Quinoflox",
+    "principio": "Ciprofloxacino",
+    "genericos": ["Ciprofloxacino (Genérico)"],
+    "similares": ["Cipro", "Ciprobiot"]
+  },
+  {
+    "referencia": "Noroxin",
+    "principio": "Norfloxacino",
+    "genericos": ["Norfloxacino (Genérico)"],
+    "similares": ["Norflox", "Floxacin"]
+  },
+  {
+    "referencia": "Vibramicina",
+    "principio": "Cloridrato de Doxiciclina",
+    "genericos": ["Doxiciclina (Genérico)"],
+    "similares": ["Doxilin", "Clordox"]
+  },
+  {
+    "referencia": "Mino-Cart",
+    "principio": "Cloridrato de Minociclina",
+    "genericos": ["Minociclina (Genérico)"],
+    "similares": ["Minomax"]
+  },
+  {
+    "referencia": "Macrodantina",
+    "principio": "Nitrofurantoína",
+    "genericos": ["Nitrofurantoína (Genérico)"],
+    "similares": ["Hantina", "Biofurin"]
+  },
+  {
+    "referencia": "Bactrim F",
+    "principio": "Sulfametoxazol + Trimetoprima (Dose Dupla)",
+    "genericos": ["Sulfametoxazol + Trimetoprima 800/160 (Genérico)"],
+    "similares": ["Bactrinil F", "Diazol F"]
+  },
+  {
+    "referencia": "Imodium",
+    "principio": "Cloridrato de Loperamida",
+    "genericos": ["Loperamida (Genérico)"],
+    "similares": ["Diasec", "Loperan", "Intestin"]
+  },
+  {
+    "referencia": "Floratil",
+    "principio": "Saccharomyces boulardii",
+    "genericos": ["Não possui (Biológico)"],
+    "similares": ["Repoflor", "Florax", "Florestor"]
+  },
+  {
+    "referencia": "Enterogermina",
+    "principio": "Bacillus clausii",
+    "genericos": ["Não possui"],
+    "similares": ["Probiotop", "Simbiotop"]
+  },
+  {
+    "referencia": "Simeticona (Referência: Luftal)",
+    "principio": "Simeticona",
+    "genericos": ["Simeticona (Genérico)"],
+    "similares": ["Flagass", "Flutua", "Simedigest"]
+  },
+  {
+    "referencia": "Dramin",
+    "principio": "Dimenidrinato",
+    "genericos": ["Dimenidrinato (Genérico)"],
+    "similares": ["Nausicalm", "Dimenidrin"]
+  },
+  {
+    "referencia": "Meclin",
+    "principio": "Cloridrato de Meclizina",
+    "genericos": ["Meclizina (Genérico)"],
+    "similares": ["Mecliz"]
+  },
+  {
+    "referencia": "Digesan",
+    "principio": "Bromoprida",
+    "genericos": ["Bromoprida (Genérico)"],
+    "similares": ["Eudon", "Plexu", "Bromopan"]
+  },
+  {
+    "referencia": "Tilatil",
+    "principio": "Tenoxicam",
+    "genericos": ["Tenoxicam (Genérico)"],
+    "similares": ["Tenoxil", "Tebic"]
+  },
+  {
+    "referencia": "Feldene",
+    "principio": "Piroxicam",
+    "genericos": ["Piroxicam (Genérico)"],
+    "similares": ["Piroxicort", "Inflamene"]
+  },
+  {
+    "referencia": "Mobic",
+    "principio": "Meloxicam",
+    "genericos": ["Meloxicam (Genérico)"],
+    "similares": ["Melox", "Movatec", "Bioflac"]
+  },
+  {
+    "referencia": "Arcoxia",
+    "principio": "Etoricoxibe",
+    "genericos": ["Etoricoxibe (Genérico)"],
+    "similares": ["Etocox", "Ritoxibe"]
+  },
+  {
+    "referencia": "Celebra",
+    "principio": "Celecoxibe",
+    "genericos": ["Celecoxibe (Genérico)"],
+    "similares": ["Eurocox", "Celecox"]
+  },
+  {
+    "referencia": "Artrolive",
+    "principio": "Glucosamina + Condroitina",
+    "genericos": ["Glucosamina + Condroitina (Genérico)"],
+    "similares": ["Condroflex", "Glucofull"]
+  },
+{
+    "referencia": "Combivair",
+    "principio": "Fumarato de Formoterol + Budesonida",
+    "genericos": ["Formoterol + Budesonida (Genérico)"],
+    "similares": ["Alenia", "Symbicort", "Foraseq"]
+  },
+  {
+    "referencia": "Xatral",
+    "principio": "Cloridrato de Alfuzosina",
+    "genericos": ["Alfuzosina (Genérico)"],
+    "similares": ["Alfuzon", "Alfu"]
+  },
+  {
+    "referencia": "Cardura",
+    "principio": "Mesilato de Doxazosina",
+    "genericos": ["Doxazosina (Genérico)"],
+    "similares": ["Duomo", "Doxagran", "Doxasin"]
+  },
+  {
+    "referencia": "Detrusitol",
+    "principio": "Tartarato de Tolterodina",
+    "genericos": ["Tolterodina (Genérico)"],
+    "similares": ["Tolteron"]
+  },
+  {
+    "referencia": "Retemic",
+    "principio": "Cloridrato de Oxibutinina",
+    "genericos": ["Oxibutinina (Genérico)"],
+    "similares": ["Antitox", "Retem-X"]
+  },
+  {
+    "referencia": "Vesicare",
+    "principio": "Succinato de Solifenacina",
+    "genericos": ["Solifenacina (Genérico)"],
+    "similares": ["Solifen", "Vesigard"]
+  },
+  {
+    "referencia": "Imitrex / Sumax",
+    "principio": "Succinato de Sumatriptana",
+    "genericos": ["Sumatriptana (Genérico)"],
+    "similares": ["Sumax", "Enxaqueca (Nota: verificar princípio)"]
+  },
+  {
+    "referencia": "Zomig",
+    "principio": "Zolmitriptana",
+    "genericos": ["Zolmitriptana (Genérico)"],
+    "similares": ["Zolmigran"]
+  },
+  {
+    "referencia": "Cinarizina (Referência: Stugeron)",
+    "principio": "Cinarizina",
+    "genericos": ["Cinarizina (Genérico)"],
+    "similares": ["Antigeron", "Cinarix"]
+  },
+  {
+    "referencia": "Flunarizina (Referência: Sibelium)",
+    "principio": "Dicloridrato de Flunarizina",
+    "genericos": ["Flunarizina (Genérico)"],
+    "similares": ["Flunarin", "Vertix"]
+  },
+  {
+    "referencia": "Dramin B6 DL",
+    "principio": "Dimenidrinato + Piridoxina + Sorbitol",
+    "genericos": ["Não possui"],
+    "similares": ["Nausicalm B6"]
+  },
+  {
+    "referencia": "Plabel / Plasil",
+    "principio": "Metoclopramida",
+    "genericos": ["Metoclopramida (Genérico)"],
+    "similares": ["Flomicin", "Metoclamid"]
+  },
+  {
+    "referencia": "Dostinex",
+    "principio": "Cabergolina",
+    "genericos": ["Cabergolina (Genérico)"],
+    "similares": ["Caberedon", "Cabertrix"]
+  },
+  {
+    "referencia": "Parlodel",
+    "principio": "Mesilato de Bromocriptina",
+    "genericos": ["Bromocriptina (Genérico)"],
+    "similares": ["Bromocriptin"]
+  },
+  {
+    "referencia": "Mestinon",
+    "principio": "Brometo de Piridostigmina",
+    "genericos": ["Piridostigmina (Genérico)"],
+    "similares": ["Mestigmina"]
+  },
+  {
+    "referencia": "Imuran",
+    "principio": "Azatioprina",
+    "genericos": ["Azatioprina (Genérico)"],
+    "similares": ["Azatiop"]
+  },
+  {
+    "referencia": "Purinethol",
+    "principio": "Mercaptopurina",
+    "genericos": ["Mercaptopurina (Genérico)"],
+    "similares": ["Purineth"]
+  },
+  {
+    "referencia": "Methotrexate",
+    "principio": "Metotrexato",
+    "genericos": ["Metotrexato (Genérico)"],
+    "similares": ["Mext", "Metoject"]
+  },
+  {
+    "referencia": "Xeloda",
+    "principio": "Capecitabina",
+    "genericos": ["Capecitabina (Genérico)"],
+    "similares": ["Capexi"]
+  },
+  {
+    "referencia": "Nolvadex",
+    "principio": "Citrato de Tamoxifeno",
+    "genericos": ["Tamoxifeno (Genérico)"],
+    "similares": ["Taxofen"]
+  },
+  {
+    "referencia": "Arimidex",
+    "principio": "Anastrozol",
+    "genericos": ["Anastrozol (Genérico)"],
+    "similares": ["Anastro", "Librezol"]
+  },
+  {
+    "referencia": "Femara",
+    "principio": "Letrozol",
+    "genericos": ["Letrozol (Genérico)"],
+    "similares": ["Letroz"]
+  },
+  {
+    "referencia": "Aromasin",
+    "principio": "Exemestano",
+    "genericos": ["Exemestano (Genérico)"],
+    "similares": ["Exemes"]
+  },
+  {
+    "referencia": "Androcur",
+    "principio": "Acetato de Ciproterona",
+    "genericos": ["Ciproterona (Genérico)"],
+    "similares": ["Ciproton"]
+  },
+  {
+    "referencia": "Provera",
+    "principio": "Acetato de Medroxiprogesterona",
+    "genericos": ["Medroxiprogesterona (Genérico)"],
+    "similares": ["Contracep", "Depo-Provera"]
+  },
+  {
+    "referencia": "Primogyna",
+    "principio": "Valerato de Estradiol",
+    "genericos": ["Valerato de Estradiol (Genérico)"],
+    "similares": ["Estradiol"]
+  },
+  {
+    "referencia": "Natifa / Estreva",
+    "principio": "Estradiol Hemieratado",
+    "genericos": ["Estradiol (Genérico)"],
+    "similares": ["Oestrogel", "Sandrena"]
+  },
+  {
+    "referencia": "Utrogestan",
+    "principio": "Progesterona Micronizada",
+    "genericos": ["Progesterona (Genérico)"],
+    "similares": ["Evocanil", "Progest"]
+  },
+  {
+    "referencia": "Duphaston",
+    "principio": "Didrogesterona",
+    "genericos": ["Não possui"],
+    "similares": ["Didrog"]
+  },
+  {
+    "referencia": "Dienogeste (Referência: Allurene)",
+    "principio": "Dienogeste",
+    "genericos": ["Dienogeste (Genérico)"],
+    "similares": ["Pietra ED", "Kalist", "Diost"]
+  },
+  {
+    "referencia": "Sandostatina",
+    "principio": "Acetato de Octreotida",
+    "genericos": ["Octreotida (Genérico)"],
+    "similares": ["Octreol"]
+  },
+  {
+    "referencia": "Somatuline",
+    "principio": "Lanreotida",
+    "genericos": ["Não possui"],
+    "similares": ["Lanreo"]
+  },
+  {
+    "referencia": "Genotropin / Saizen",
+    "principio": "Somatropina (Hormona de Crescimento)",
+    "genericos": ["Somatropina (Genérico)"],
+    "similares": ["Norditropin", "Omnitrope"]
+  },
+  {
+    "referencia": "Humalog / Novorapid",
+    "principio": "Insulina Lispro / Asparte",
+    "genericos": ["Insulina Rápida (Genérico - Biossimilar)"],
+    "similares": ["Fiasp", "Apidra"]
+  },
+  {
+    "referencia": "Lantus / Toujeo",
+    "principio": "Insulina Glargina",
+    "genericos": ["Glargina (Biossimilar)"],
+    "similares": ["Basaglar", "Tresiba (Nota: Degludeca)"]
+  },
+  {
+    "referencia": "Victoza / Saxenda",
+    "principio": "Liraglutida",
+    "genericos": ["Não possui"],
+    "similares": ["Ozempic (Nota: Semaglutida)"]
+  },
+  {
+    "referencia": "Ozempic / Wegovy",
+    "principio": "Semaglutida",
+    "genericos": ["Não possui"],
+    "similares": ["Rybelsus (Oral)"]
+  },
+  {
+    "referencia": "Jardiance",
+    "principio": "Empagliflozina",
+    "genericos": ["Empagliflozina (Genérico - Recentemente aprovado)"],
+    "similares": ["Empa"]
+  },
+  {
+    "referencia": "Forxiga",
+    "principio": "Dapagliflozina",
+    "genericos": ["Dapagliflozina (Genérico)"],
+    "similares": ["Dapamedi"]
+  },
+  {
+    "referencia": "Invokana",
+    "principio": "Canagliflozina",
+    "genericos": ["Canagliflozina (Genérico)"],
+    "similares": ["Invok"]
+  },
