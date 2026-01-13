@@ -2,17 +2,14 @@
 
 const DEFAULT_BALCONISTAS = []; 
 
-// OPÇÕES PRONTAS DE AVATARES
-const GALLERY_OPTIONS = [
-    { name: "Avatar 1", url: "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Felix" }, 
-    { name: "Avatar 2", url: "https://api.dicebear.com/9.x/thumbs/svg?seed=Felix" },
-    { name: "Avatar 3", url: "https://api.dicebear.com/9.x/bottts/svg?seed=Felix" }, 
-    { name: "Avatar 4", url: "https://api.dicebear.com/9.x/bottts-neutral/svg" },
-    { name: "Avatar 5", url: "https://api.dicebear.com/9.x/dylan/svg?seed=Felix" },
-    { name: "Avatar 6", url: "https://api.dicebear.com/9.x/notionists-neutral/svg" }
-];
-
-const AVATAR_STYLES = [ "fun-emoji", "thumbs", "bottts", "bottts-neutral", "dylan", "notionists-neutral" ];
+// 1. ALTERAÇÃO: CARREGANDO AVATARES DA PASTA LOCAL (REMOVIDO API EXTERNA)
+const GALLERY_OPTIONS = [];
+for (let i = 1; i <= 40; i++) {
+    GALLERY_OPTIONS.push({
+        name: `Avatar ${i}`,
+        url: `assets/avatares/${i}.png`
+    });
+}
 
 // VARIÁVEIS GLOBAIS
 let balconistas = []; 
@@ -52,12 +49,11 @@ let selectedAvatarUrl = null;
 const mascoteImg = document.getElementById('mascote-img');
 const mascoteBalao = document.getElementById('mascote-balao');
 
-// MAPEAMENTO DOS ARQUIVOS NA PASTA assets/bot
 const GIFS = {
-    duvida:  'assets/bot/mascote-duvida.gif',  // Mouse em cima
-    idle:    'assets/bot/mascote-idle.gif',    // Tem atendimento (Em pé)
-    pc:      'assets/bot/mascote-pc.gif',      // Fila vazia (No PC)
-    sucesso: 'assets/bot/mascote-sucesso.gif'  // Botão Atendi (Comemorando)
+    duvida:  'assets/bot/mascote-duvida.gif',
+    idle:    'assets/bot/mascote-idle.gif',
+    pc:      'assets/bot/mascote-pc.gif',
+    sucesso: 'assets/bot/mascote-sucesso.gif'
 };
 
 function preloadImages() { for (const key in GIFS) { const img = new Image(); img.src = GIFS[key]; } }
@@ -67,7 +63,6 @@ let estadoAtual = 'idle';
 let timeoutSucesso = null;
 let balaoTimeout = null;
 
-// FUNÇÃO PARA LIMPAR O BALÃO DE FALA
 function limparFala() {
     if (mascoteBalao) {
         mascoteBalao.classList.remove('visible');
@@ -81,10 +76,7 @@ function limparFala() {
 
 function setMascote(estado) {
     if (estadoAtual === estado) return;
-
-    // SE O TIPO MUDOU, O BALÃO DEVE SUMIR PARA NÃO FICAR ERRADO
     limparFala();
-
     if (mascoteImg) { 
         mascoteImg.src = GIFS[estado]; 
         estadoAtual = estado; 
@@ -92,20 +84,15 @@ function setMascote(estado) {
 }
 
 function verificarEstadoFila() {
-    if (timeoutSucesso) return; // Se estiver comemorando, não muda
+    if (timeoutSucesso) return;
     if (document.getElementById('modal-ajuda') && document.getElementById('modal-ajuda').style.display === 'flex') return;
-
-    // LÓGICA PEDIDA:
     if (fila.length === 0) {
-        // Ninguém na fila -> Mascote no PC (Trabalhando/Esperando)
         setMascote('pc'); 
     } else {
-        // Tem gente na fila (Atendimento) -> Mascote Idle (Em pé observando)
         setMascote('idle'); 
     }
 }
 
-// ARRASTAR MASCOTE + EVENTO DE MOUSE
 if (mascoteImg) {
     const container = document.getElementById('mascote-container');
     const savedPos = localStorage.getItem('mascotePosicao');
@@ -137,7 +124,6 @@ if (mascoteImg) {
         }
     };
 
-    // EVENTO: Passar o mouse -> Fica com Dúvida
     mascoteImg.onmouseenter = () => {
         if (!isDragging && !timeoutSucesso) {
             setMascote('duvida');
@@ -145,7 +131,6 @@ if (mascoteImg) {
         }
     };
 
-    // EVENTO: Tirar o mouse -> Volta ao estado normal da fila (PC ou Idle)
     mascoteImg.onmouseleave = () => {
         if (!isDragging) verificarEstadoFila();
     };
@@ -156,24 +141,18 @@ if(btnFecharAjuda) {
     btnFecharAjuda.onclick = () => { document.getElementById('modal-ajuda').style.display = 'none'; verificarEstadoFila(); };
 }
 
-// FALAS DA ELYSE (CORRIGIDA)
 function falar(texto) {
     if (!mascoteBalao) return;
-
-    // Reseta fala anterior
     limparFala();
-
     setTimeout(() => {
         mascoteBalao.textContent = texto; 
         mascoteBalao.classList.add('visible');
-        
         balaoTimeout = setTimeout(() => { 
             limparFala();
         }, 4000);
     }, 50);
 }
 
-// LOOP COACH (Falas aleatórias)
 setInterval(() => {
     const bancoFalas = window.FALAS_ELYSE || { aleatorias: ["Olá!"] };
     if (Math.random() > 0.5) { 
@@ -187,7 +166,6 @@ setInterval(() => {
     }
 }, 20000);
 
-// MÁSCARA CELULAR
 modalCelInput.addEventListener('input', function (e) {
     let value = e.target.value;
     value = value.replace(/\D/g, "");
@@ -197,12 +175,11 @@ modalCelInput.addEventListener('input', function (e) {
     e.target.value = value;
 });
 
-// UTILITÁRIOS
+// 2. ALTERAÇÃO: USAR AVATAR LOCAL PADRÃO (REMOVIDO API)
 function getAvatarUrlInicial(nome) {
-    return `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(nome)}&backgroundColor=4f8d4f&textColor=ffffff&fontWeight=700`;
+    return `assets/avatares/1.png`;
 }
 
-// SAVE / LOAD
 function saveState() {
     localStorage.setItem('balconistas', JSON.stringify(balconistas));
     localStorage.setItem('fila', JSON.stringify(fila));
@@ -220,20 +197,17 @@ function loadState() {
 }
 loadState();
 
-// GERADOR AVATARES
-function gerarGaleriaAleatoria() {
+// 3. ALTERAÇÃO: GERAR GALERIA COM OS 40 AVATARES DA PASTA ASSETS
+function gerarGaleriaLocal() {
     imageGallery.innerHTML = '';
-    AVATAR_STYLES.forEach((style, index) => {
-        const randomSeed = Math.random().toString(36).substring(7);
-        const url = `https://api.dicebear.com/9.x/${style}/svg?seed=${randomSeed}`;
-        
+    GALLERY_OPTIONS.forEach((opt) => {
         const div = document.createElement('div'); div.classList.add('gallery-option');
-        const img = document.createElement('img'); img.src = url; div.appendChild(img);
+        const img = document.createElement('img'); img.src = opt.url; div.appendChild(img);
         
         div.onclick = () => {
             document.querySelectorAll('.gallery-option').forEach(el => el.classList.remove('selected')); 
             div.classList.add('selected');
-            selectedAvatarUrl = url;
+            selectedAvatarUrl = opt.url;
             modalImagePreview.innerHTML = `<img src="${selectedAvatarUrl}" alt="Preview">`;
         };
         imageGallery.appendChild(div);
@@ -241,25 +215,21 @@ function gerarGaleriaAleatoria() {
 }
 
 btnRefreshAvatars.onclick = () => {
-    btnRefreshAvatars.innerHTML = "⏳ Carregando...";
-    setTimeout(() => { btnRefreshAvatars.innerHTML = "🔄 Novas Opções"; }, 500);
-    gerarGaleriaAleatoria();
+    gerarGaleriaLocal();
     selectedAvatarUrl = null; 
     atualizarPreviewAvatarAutomatico();
 };
 
-// MODAL
 function openAddModal() {
     modalOverlay.style.display = 'flex'; modalForm.reset(); selectedAvatarUrl = null; 
-    gerarGaleriaAleatoria();
+    gerarGaleriaLocal();
     atualizarPreviewAvatarAutomatico(); modalNomeInput.focus();
 }
 
 function atualizarPreviewAvatarAutomatico() {
     const nome = modalNomeInput.value.trim();
     if (!selectedAvatarUrl) {
-        if (nome.length > 0) modalImagePreview.innerHTML = `<img src="${getAvatarUrlInicial(nome)}" alt="Avatar">`;
-        else modalImagePreview.innerHTML = `<span style="color:#8b8680; font-size:12px;">Digite o nome...</span>`;
+        modalImagePreview.innerHTML = `<img src="${getAvatarUrlInicial(nome)}" alt="Avatar">`;
     }
 }
 modalNomeInput.oninput = atualizarPreviewAvatarAutomatico;
@@ -270,8 +240,14 @@ modalForm.onsubmit = (e) => {
     e.preventDefault(); const nome = modalNomeInput.value.trim(); if (nome.length === 0) return;
     const idUnico = Date.now().toString(); 
     const imagemFinal = selectedAvatarUrl ? selectedAvatarUrl : getAvatarUrlInicial(nome);
+
+    // 4. ALTERAÇÃO: DATA SOMENTE DD/MM PARA O CADASTRO
+    const agora = new Date();
+    const diaMes = String(agora.getDate()).padStart(2, '0') + '/' + String(agora.getMonth() + 1).padStart(2, '0');
+
     const novoBalconista = {
-        id: idUnico, nome: nome, nascimento: modalNascInput.value, sexo: modalSexoInput.value, celular: modalCelInput.value, avatarUrl: imagemFinal, base64: null 
+        id: idUnico, nome: nome, nascimento: modalNascInput.value, sexo: modalSexoInput.value, celular: modalCelInput.value, 
+        avatarUrl: imagemFinal, dataCadastro: diaMes, base64: null 
     };
     btnSalvarModal.classList.add('loading');
     setTimeout(() => {
@@ -282,22 +258,18 @@ modalForm.onsubmit = (e) => {
 btnAdicionarBalconista.onclick = openAddModal;
 btnCancelarModal.onclick = closeAddModal;
 
-// --- TELA FILA (FOTO CENTRAL) ---
 function atualizarTela1() {
   if (fila.length > 0) {
     const atual = fila[0]; 
     nomeAtual.textContent = atual.nome;
     fotoAtual.src = atual.avatarUrl || getAvatarUrlInicial(atual.nome);
   } else {
-    // FILA VAZIA NO CENTRO DA TELA
     nomeAtual.textContent = "SEM ATENDIMENTOS"; 
-    // CORREÇÃO: Usar o ícone padrão de sem atendimento em vez da mascote
     fotoAtual.src = "assets/icons/sem-atendimento.png"; 
   }
   atualizarTabelaFila(); atualizarCardsFila(); iniciarCronometro(); verificarEstadoFila();
 }
 
-// --- TELA GESTÃO ---
 function montarTela2() {
   const container = document.getElementById("balconistas-container"); container.innerHTML = "";
   if (balconistas.length === 0) { 
@@ -350,7 +322,6 @@ function atualizarCardsFila() {
   });
 }
 
-// AÇÕES
 btnAtendi.onclick = () => {
   if (!fila.length) return;
   const atendido = fila.shift(); fila.push(atendido);
@@ -359,7 +330,6 @@ btnAtendi.onclick = () => {
   tempoTotalEspera[atendido.id] = (tempoTotalEspera[atendido.id] || 0) + (tempoRelogio[atendido.id] || 0);
   tempoRelogio[atendido.id] = 0;
   
-  // AQUI: ELA COMEMORA E LIMPA FALA ANTIGA
   setMascote('sucesso'); 
   falar("Atendimento realizado! 👍");
   
@@ -402,8 +372,13 @@ function atualizarTabelaFila() {
     const qtd = atendimentos[b.id] || 0;
     const media = qtd > 0 ? Math.floor((tempoTotalEspera[b.id] || 0) / qtd) : 0;
     const relogio = i === 0 ? ` <small>(${formatarTempo(tempoRelogio[b.id] || 0)})</small>` : "";
+    
+    // 5. ALTERAÇÃO: DATA SOMENTE DIA/MÊS (EX: 16/12) PARA A TABELA
+    const agora = new Date();
+    const diaMes = String(agora.getDate()).padStart(2, '0') + '/' + String(agora.getMonth() + 1).padStart(2, '0');
+
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${i + 1}º</td><td>${b.nome}${relogio}</td><td>${qtd}</td><td>${horasUltimoAtendimento[b.id] || "--:--"}</td><td>${formatarTempo(media)}</td><td>${formatarTempo(tempoFila[b.id] || 0)}</td>`;
+    tr.innerHTML = `<td>${i + 1}º</td><td>${b.nome}${relogio}</td><td>${qtd}</td><td>${diaMes}</td><td>${formatarTempo(media)}</td><td>${formatarTempo(tempoFila[b.id] || 0)}</td>`;
     tbody.appendChild(tr);
   });
 }
@@ -435,5 +410,4 @@ document.addEventListener('keydown', (e) => {
 });
 
 // --- INICIALIZAÇÃO IMEDIATA ---
-// Garante que a mascote e a fila apareçam sem delay
 atualizarTela1();
