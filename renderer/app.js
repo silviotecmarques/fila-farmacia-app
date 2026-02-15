@@ -1,8 +1,19 @@
-// SISTEMA ELYSE - VERSÃO FINAL (FIX: BALÕES + INICIO RÁPIDO)
+// SISTEMA ELYSE - VERSÃO 1.0.7 (PERSISTÊNCIA TOTAL + DATA DD/MES)
+
+const VERSION_CONTROL = {
+    version: "1.0.7",
+    lastUpdate: "13/01/2026"
+};
+
+// Atualiza o indicador visual de versão no canto da tela
+if (document.getElementById('versao-app')) {
+    document.getElementById('versao-app').textContent = `v${VERSION_CONTROL.version}`;
+}
+
+const MESES_ABR = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
 
 const DEFAULT_BALCONISTAS = []; 
 
-// 1. ALTERAÇÃO: CARREGANDO AVATARES DA PASTA LOCAL (REMOVIDO API EXTERNA)
 const GALLERY_OPTIONS = [];
 for (let i = 1; i <= 40; i++) {
     GALLERY_OPTIONS.push({
@@ -11,7 +22,6 @@ for (let i = 1; i <= 40; i++) {
     });
 }
 
-// VARIÁVEIS GLOBAIS
 let balconistas = []; 
 let fila = [];
 let tempoFila = {}, tempoRelogio = {}, atendimentos = {}, horasUltimoAtendimento = {}, tempoTotalEspera = {};
@@ -19,7 +29,6 @@ let cronometroInterval = null;
 let isDeletionMode = false; 
 let selectedForDeletion = []; 
 
-// ELEMENTOS DOM
 const nomeAtual = document.getElementById("nome-atual");
 const fotoAtual = document.getElementById("foto-atual");
 const btnAtendi = document.getElementById("btn-atendi");
@@ -35,17 +44,16 @@ const modalOverlay = document.getElementById('modal-overlay');
 const modalNomeInput = document.getElementById('modal-nome');
 const modalNascInput = document.getElementById('modal-nasc');
 const modalSexoInput = document.getElementById('modal-sexo');
-const modalCelInput = document.getElementById('modal-cel');
 const btnSalvarModal = document.getElementById('btn-salvar-modal');
 const btnCancelarModal = document.getElementById('btn-cancelar-modal');
 const modalImagePreview = document.getElementById('modal-image-preview');
 const modalForm = document.getElementById('modal-add-form');
 const imageGallery = document.getElementById('image-gallery'); 
 const btnRefreshAvatars = document.getElementById('btn-refresh-avatars');
+const inputFileAvatar = document.getElementById('input-file-avatar'); 
 
-let selectedAvatarUrl = null;
+let selectedAvatarUrl = null; // Armazenará o Base64 da imagem carregada
 
-// --- CONFIGURAÇÃO DA MASCOTE (PASTA ASSETS/BOT) ---
 const mascoteImg = document.getElementById('mascote-img');
 const mascoteBalao = document.getElementById('mascote-balao');
 
@@ -59,7 +67,7 @@ const GIFS = {
 function preloadImages() { for (const key in GIFS) { const img = new Image(); img.src = GIFS[key]; } }
 preloadImages();
 
-let estadoAtual = 'idle';
+let estadoAtual = ''; 
 let timeoutSucesso = null;
 let balaoTimeout = null;
 
@@ -86,11 +94,17 @@ function setMascote(estado) {
 function verificarEstadoFila() {
     if (timeoutSucesso) return;
     if (document.getElementById('modal-ajuda') && document.getElementById('modal-ajuda').style.display === 'flex') return;
+    
     if (fila.length === 0) {
         setMascote('pc'); 
+        btnAtendi.disabled = true;
+        btnPular.disabled = true;
     } else {
         setMascote('idle'); 
+        btnAtendi.disabled = false;
+        btnPular.disabled = false;
     }
+    btnGestao.disabled = false;
 }
 
 if (mascoteImg) {
@@ -153,33 +167,31 @@ function falar(texto) {
     }, 50);
 }
 
-setInterval(() => {
-    const bancoFalas = window.FALAS_ELYSE || { aleatorias: ["Olá!"] };
-    if (Math.random() > 0.5) { 
-        let frase = ""; const hora = new Date().getHours(); const chance = Math.random() > 0.8;
-        if (fila.length === 0) frase = bancoFalas.filaVazia[Math.floor(Math.random() * bancoFalas.filaVazia.length)];
-        else if (fila.length > 5) frase = bancoFalas.filaCheia[Math.floor(Math.random() * bancoFalas.filaCheia.length)];
-        else if (hora < 12 && chance) frase = bancoFalas.bomDia[Math.floor(Math.random() * bancoFalas.bomDia.length)];
-        else if (hora >= 18 && chance) frase = bancoFalas.boaNoite[Math.floor(Math.random() * bancoFalas.boaNoite.length)];
-        else frase = bancoFalas.aleatorias[Math.floor(Math.random() * bancoFalas.aleatorias.length)];
-        falar(frase);
-    }
-}, 20000);
-
-modalCelInput.addEventListener('input', function (e) {
+// LÓGICA DE DATA DD/MES
+modalNascInput.addEventListener('blur', function (e) {
     let value = e.target.value;
-    value = value.replace(/\D/g, "");
-    if (value.length > 11) value = value.slice(0, 11);
-    if (value.length > 2) value = `(${value.slice(0, 2)}) ${value.slice(2)}`;
-    if (value.length > 10) value = `${value.slice(0, 10)}-${value.slice(10)}`;
-    e.target.value = value;
+    if (value.length === 5 && value.includes('/')) {
+        let partes = value.split('/');
+        let dia = partes[0];
+        let mesNum = parseInt(partes[1]);
+        if (mesNum >= 1 && mesNum <= 12) {
+            e.target.value = `${dia}/${MESES_ABR[mesNum - 1]}`;
+        }
+    }
 });
 
-// 2. ALTERAÇÃO: USAR AVATAR LOCAL PADRÃO (REMOVIDO API)
+modalNascInput.addEventListener('input', function (e) {
+    let value = e.target.value.replace(/[^\d/a-z]/g, "");
+    if (value.length === 2 && !value.includes('/')) value += "/";
+    if (value.length > 6) value = value.slice(0, 6);
+    e.target.value = value.toLowerCase();
+});
+
 function getAvatarUrlInicial(nome) {
     return `assets/avatares/1.png`;
 }
 
+// --- SALVAMENTO E CARREGAMENTO ---
 function saveState() {
     localStorage.setItem('balconistas', JSON.stringify(balconistas));
     localStorage.setItem('fila', JSON.stringify(fila));
@@ -192,12 +204,17 @@ function loadState() {
     try {
         const stored = localStorage.getItem('balconistas');
         balconistas = stored ? JSON.parse(stored) : DEFAULT_BALCONISTAS;
-        fila = []; tempoFila = {}; tempoRelogio = {}; atendimentos = {}; tempoTotalEspera = {};
-    } catch(e) { balconistas = []; }
+        
+        const storedFila = localStorage.getItem('fila');
+        fila = storedFila ? JSON.parse(storedFila) : [];
+        
+        atendimentos = JSON.parse(localStorage.getItem('atendimentos')) || {};
+        tempoFila = JSON.parse(localStorage.getItem('tempoFila')) || {};
+        tempoTotalEspera = JSON.parse(localStorage.getItem('tempoTotalEspera')) || {};
+    } catch(e) { balconistas = []; fila = []; }
 }
 loadState();
 
-// 3. ALTERAÇÃO: GERAR GALERIA COM OS 40 AVATARES DA PASTA ASSETS
 function gerarGaleriaLocal() {
     imageGallery.innerHTML = '';
     GALLERY_OPTIONS.forEach((opt) => {
@@ -207,7 +224,7 @@ function gerarGaleriaLocal() {
         div.onclick = () => {
             document.querySelectorAll('.gallery-option').forEach(el => el.classList.remove('selected')); 
             div.classList.add('selected');
-            selectedAvatarUrl = opt.url;
+            selectedAvatarUrl = opt.url; // Caminho local para avatares padrão
             modalImagePreview.innerHTML = `<img src="${selectedAvatarUrl}" alt="Preview">`;
         };
         imageGallery.appendChild(div);
@@ -215,9 +232,22 @@ function gerarGaleriaLocal() {
 }
 
 btnRefreshAvatars.onclick = () => {
-    gerarGaleriaLocal();
-    selectedAvatarUrl = null; 
-    atualizarPreviewAvatarAutomatico();
+    inputFileAvatar.click();
+};
+
+// --- CONVERSÃO DA FOTO PARA BASE64 (PERSISTÊNCIA DEFINITIVA) ---
+inputFileAvatar.onchange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            selectedAvatarUrl = event.target.result; // Imagem virou texto Base64
+            modalImagePreview.innerHTML = `<img src="${selectedAvatarUrl}" alt="Foto Carregada" style="border-radius: 50%; object-fit: cover;">`;
+            document.querySelectorAll('.gallery-option').forEach(el => el.classList.remove('selected'));
+            falar("Essa foto ficou ótima! ✨");
+        };
+        reader.readAsDataURL(file);
+    }
 };
 
 function openAddModal() {
@@ -235,26 +265,25 @@ function atualizarPreviewAvatarAutomatico() {
 modalNomeInput.oninput = atualizarPreviewAvatarAutomatico;
 function closeAddModal() { modalOverlay.style.display = 'none'; }
 
-// SALVAR
 modalForm.onsubmit = (e) => {
     e.preventDefault(); const nome = modalNomeInput.value.trim(); if (nome.length === 0) return;
     const idUnico = Date.now().toString(); 
     const imagemFinal = selectedAvatarUrl ? selectedAvatarUrl : getAvatarUrlInicial(nome);
 
-    // 4. ALTERAÇÃO: DATA SOMENTE DD/MM PARA O CADASTRO
-    const agora = new Date();
-    const diaMes = String(agora.getDate()).padStart(2, '0') + '/' + String(agora.getMonth() + 1).padStart(2, '0');
-
     const novoBalconista = {
-        id: idUnico, nome: nome, nascimento: modalNascInput.value, sexo: modalSexoInput.value, celular: modalCelInput.value, 
-        avatarUrl: imagemFinal, dataCadastro: diaMes, base64: null 
+        id: idUnico, 
+        nome: nome, 
+        nascimento: modalNascInput.value, 
+        sexo: modalSexoInput.value, 
+        avatarUrl: imagemFinal // Salva o Base64 ou URL local
     };
     btnSalvarModal.classList.add('loading');
     setTimeout(() => {
         balconistas.push(novoBalconista); saveState();
-        btnSalvarModal.classList.remove('loading'); closeAddModal(); montarTela2(); falar("Cadastro realizado! 🎉");
+        btnSalvarModal.classList.remove('loading'); closeAddModal(); montarTela2(); falar("Cadastro salvo para sempre! 🎉");
     }, 1000);
 };
+
 btnAdicionarBalconista.onclick = openAddModal;
 btnCancelarModal.onclick = closeAddModal;
 
@@ -275,7 +304,7 @@ function montarTela2() {
   if (balconistas.length === 0) { 
       container.innerHTML = `
         <div class="empty-state">
-            <img src="assets/bot/mascote-idle.gif" alt="Elyse" style="width:150px;">
+            <img src="assets/icons/sem-atendimento.png" alt="Sem Cadastro" style="width:150px; border-radius: 20px;">
             <h2>NÃO HÁ NINGUÉM CADASTRADO</h2>
             <p>Clique no botão azul "ADICIONAR NOVO" para começar a equipe.</p>
         </div>
@@ -373,12 +402,8 @@ function atualizarTabelaFila() {
     const media = qtd > 0 ? Math.floor((tempoTotalEspera[b.id] || 0) / qtd) : 0;
     const relogio = i === 0 ? ` <small>(${formatarTempo(tempoRelogio[b.id] || 0)})</small>` : "";
     
-    // 5. ALTERAÇÃO: DATA SOMENTE DIA/MÊS (EX: 16/12) PARA A TABELA
-    const agora = new Date();
-    const diaMes = String(agora.getDate()).padStart(2, '0') + '/' + String(agora.getMonth() + 1).padStart(2, '0');
-
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${i + 1}º</td><td>${b.nome}${relogio}</td><td>${qtd}</td><td>${diaMes}</td><td>${formatarTempo(media)}</td><td>${formatarTempo(tempoFila[b.id] || 0)}</td>`;
+    tr.innerHTML = `<td>${i + 1}º</td><td>${b.nome}${relogio}</td><td>${qtd}</td><td>${b.nascimento || '-'}</td><td>${formatarTempo(media)}</td><td>${formatarTempo(tempoFila[b.id] || 0)}</td>`;
     tbody.appendChild(tr);
   });
 }
@@ -394,20 +419,12 @@ function formatarTempo(seg) {
   return h > 0 ? `${h}:${String(m).padStart(2, "0")}` : `${m}:${String(s).padStart(2, "0")}`;
 }
 
-async function atualizarLetreiro() {
-    try {
-        const noticias = await window.api.buscarNoticias();
-        const div = document.querySelector('.ticker-content');
-        if(div) div.innerHTML = `🚀 <b>FARMÁCIA MAXI POPULAR</b> — ${noticias}`;
-    } catch(e) {}
-}
-atualizarLetreiro(); setInterval(atualizarLetreiro, 600000);
-
 document.addEventListener('keydown', (e) => {
     if (e.target.tagName === 'INPUT') return;
     if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); btnAtendi.click(); }
     if (e.key === 'p' || e.key === 'P' || e.key === 'Escape') { btnPular.click(); }
 });
 
-// --- INICIALIZAÇÃO IMEDIATA ---
+// INICIALIZAÇÃO CORRETA
 atualizarTela1();
+verificarEstadoFila();

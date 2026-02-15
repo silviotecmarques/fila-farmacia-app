@@ -33,8 +33,7 @@
           <th>Ordem</th>
           <th>Balconista</th>
           <th>Atendimentos</th>
-          <th>Última Vez</th>
-          <th>Média Espera</th>
+          <th>Nascimento</th> <th>Média Espera</th>
           <th>Tempo Fila</th>
         </tr>
       </thead>
@@ -63,14 +62,14 @@
           <h2>📝 Novo Cadastro de Equipe</h2>
           <form id="modal-add-form">
               <div class="form-group">
-                  <label for="modal-nome">Nome Completo:</label>
+                  <label for="modal-nome">Nome:</label> 
                   <input type="text" id="modal-nome" placeholder="Ex: Maria Silva" required>
               </div>
 
               <div style="display: flex; gap: 15px; margin-bottom: 15px;">
                   <div style="flex: 1;">
-                      <label for="modal-nasc">Nascimento:</label>
-                      <input type="date" id="modal-nasc" style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 8px;">
+                      <label for="modal-nasc">Nascimento (Ex: 13/jan):</label> 
+                      <input type="text" id="modal-nasc" placeholder="13/jan" maxlength="6" required style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 8px;">
                   </div>
                   <div style="flex: 1;">
                       <label for="modal-sexo">Sexo:</label>
@@ -81,10 +80,6 @@
                   </div>
               </div>
 
-              <div class="form-group">
-                  <label for="modal-cel">Celular / WhatsApp:</label>
-                  <input type="tel" id="modal-cel" placeholder="(00) 00000-0000" maxlength="15" style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 8px;">
-              </div>
               <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
 
               <div class="form-group">
@@ -94,15 +89,16 @@
                         🔄 Novas Opções
                       </button>
                   </div>
-                  <small style="color: #666; display: block; margin-bottom: 10px;">Clique em uma opção ou digite o nome para automático.</small>
+                  <small style="color: #666; display: block; margin-bottom: 10px;">Escolha um avatar da lista ou carregue uma foto personalizada.</small>
                   
                   <div id="image-gallery"></div>
+                  <input type="file" id="input-file-avatar" accept="image/*" style="display: none;">
               </div>
 
               <div id="modal-image-preview-container" style="text-align: center; margin: 20px 0;">
                   <label>Como vai ficar:</label>
                   <div id="modal-image-preview">
-                      <span style="color: #8b8680; font-size: 12px;">Aguardando nome...</span>
+                      <span style="color: #8b8680; font-size: 12px;">Aguardando foto...</span>
                   </div>
               </div>
 
@@ -137,10 +133,10 @@
 
   <div id="mascote-container">
       <div id="mascote-balao" class="hidden">Olá!</div>
-      <img id="mascote-img" src="assets/mascote-idle.gif" alt="Mascote">
+      <img id="mascote-img" src="assets/bot/mascote-idle.gif" alt="Mascote">
   </div>
 
-  <div class="news-ticker"><div class="ticker-content">🔄 BUSCANDO NOTÍCIAS...</div></div>
+  <div id="versao-app">v1.0.7</div>
 
   <script src="renderer/falas.js"></script> 
   <script src="renderer/app.js"></script>
